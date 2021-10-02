@@ -520,30 +520,3 @@ body.oissu-image span.os-identifier{
 body.oissu-image img.os-identifier {
     display: block;
 }
-
-/*
-body.oissu-bubble .oissu p.startmsg{
-    margin-top: 15px;
-}
-
-body.oissu-bubble .oissu .endmsg {
-    margin-bottom: 1em;
-}
-
-body.oissu-bubble .oissu > p .identifier__wrapper{
-    transform: translate( calc( ( var(--os-identifier-width) * -1 ) - 10px - 15px) , -25px);
-}
-
-body.oissu-bubble .oissu .identifier.name{
-    position: absolute;
-    transform: translateX( calc( var(--os-identifier-width) + 10px ) );
-    line-height: 1em;
-    font-size: 0.75em;
-}
-
-body.oissu-bubble .oissu .identifier.icon{
-    opacity: 1;
-}
-*/
-
-/*----------------------------------------------------------------------------*/

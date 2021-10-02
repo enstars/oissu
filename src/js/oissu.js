@@ -12,21 +12,7 @@ var logo = `<svg width="1093" height="421" viewBox="0 0 1093 421" fill="none" xm
 <path class="oissu-logo__letter" d="M898.454 193.82V111.654H914.882L947.738 134.114V166.971L914.882 144.51V211.301C916.304 240.823 901.659 254.829 878.944 254.829C863.776 254.829 849.315 242.838 849.315 224.685C849.315 206.532 856.919 191.071 878.944 189.094C884.917 188.558 893.608 191.027 898.454 193.82Z" fill="white"/>
 </svg>
 `
-var scrollReveal = document.createElement('script');
-scrollReveal.src = 'https://unpkg.com/scrollreveal';
-document.head.appendChild(scrollReveal);
-var modernContext = document.createElement('script');
-modernContext.src = 'http://localhost:4000/js/context.js';
-document.head.appendChild(modernContext);
-var featherIcons = document.createElement('script');
-featherIcons.src = 'https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js';
-document.head.appendChild(featherIcons);
-var popperJS = document.createElement('script');
-popperJS.src = 'https://unpkg.com/@popperjs/core@2';
-document.head.appendChild(popperJS);
-var tippyJS = document.createElement('script');
-tippyJS.src = 'https://unpkg.com/tippy.js@6';
-document.head.appendChild(tippyJS);
+
 
 var oissuConfig = {
     "bubble": false,
@@ -34,11 +20,139 @@ var oissuConfig = {
     "custom": false
 };
 
+(function( oissu, $, undefined ) {
+    /*
+    //Private Property
+    var isHot = true;
 
-function initializeNotice( oissu ){
+    //Public Property
+    oissu.ingredient = "Bacon Strips";
 
-    if( $(oissu).find('[data-notice-type]').length > 0 ){
-        console.log("FOUND NOTICE");
+    //Public Method
+    oissu.fry = function() {
+        var oliveOil;
+
+        addItem( "\t\n Butter \n\t" );
+        addItem( oliveOil );
+        console.log( "Frying " + skillet.ingredient );
+    };
+
+    //Private Method
+    function addItem( item ) {
+        if ( item !== undefined ) {
+            console.log( "Adding " + $.trim(item) );
+        }
+    }*/
+
+
+
+    oissu.format = function(oissu) {
+
+
+        if( $(oissu).find('[data-notice-type]').length > 0 ){
+            initNotice(oissu);
+        }
+
+        var oissuDialogue = $(oissu).find('div.oissu');
+        console.log(oissu);
+        var cache = $(`<div class="os-exclude"></div>`);
+        var dialogue = $(`<div></div>`);
+        chat = $(oissuDialogue).children();
+        chat.each( function() {
+            var newUnit =
+                $(this).html().startsWith("<b") ||
+                $(this).html().startsWith("<strong") ||
+                $(this).hasClass('end'),
+                rich =
+                $(this).prop('outerHTML').startsWith("<div") ||
+                $(this).prop('outerHTML').startsWith("<blockquote"),
+                block =
+                $(this).prop('outerHTML').startsWith("<blockquote");
+            if( newUnit || rich ){
+                if(newUnit){
+                    var name = $(this).children().first().text().replace(":", "");
+                    $(this).children().first().remove();
+                }
+                if( !$(cache).hasClass('os-exclude') ){
+                    var unit = $('<div></div>').addClass('os-unit');
+                    if( $(cache).is("[character]") ){
+                        $(unit).attr('character', $(cache).attr('character'));
+                        var thisName = $(cache).attr('character');
+                        var iconFile = "";
+                        try{
+                            iconFile = icons.find(x => x.commonname === thisName).filename;
+                        }catch(e){
+                            iconFile = `https://r.tsukina.ga/i/default/Icon.png`;
+                        }
+                        $(unit).append( $('<img></img>').addClass('os-identifier').attr(`src`, iconFile) );
+                        $(unit).append( $('<span></span>').addClass('os-identifier').text(thisName) );
+                    }
+                    $(unit).append(cache);
+                    $(dialogue).append(unit);
+                }
+
+                if( newUnit ) {
+                    cache = $(`<div></div>`).addClass(`os-content os-lines`);
+                    $(cache).attr('character', name)
+                    $(cache).append(`<p>` + $(this).html() + `</p>`);
+                } else {
+                    cache = $(`<div></div>`).addClass(`os-content os-rich`);
+                    $(cache).append($(this).html());
+                    if(block){
+                        $(cache).addClass('os-block');
+                        $(cache).children().each(function() {
+                            if($(this).text().toLowerCase().startsWith("location")){
+                                $(this).prepend(`<i data-feather="map-pin"></i>`)
+                                .wrap('<div></div>').parent().addClass('os-location')
+                                .prepend(`<span class="os-hr left"></span><span class="os-hr right"></span>`);
+                            }
+                            else if(
+                                $(this).text().toLowerCase().startsWith("season")
+                            ){
+                                $(this).addClass('os-season').prepend(`<i data-feather="thermometer"></i>`);
+                            }
+                            else if(
+                                $(this).text().toLowerCase().startsWith("time")
+                            ){
+                                $(this).addClass('os-time').prepend(`<i data-feather="clock"></i>`);
+                            }
+                            else {
+                                $(this).wrap('<div></div>').parent().addClass('os-narration');
+
+
+                            }
+                        });
+                    }
+                    //console.log('.');
+                }
+
+            }
+            else {
+                $(cache).append(`<p>` + $(this).html() + `</p>`);
+            }
+            $(this).remove();
+
+        });
+        $(oissuDialogue).append( $(dialogue).children() );
+        $(oissu).removeClass('oissu__embed-loading');
+
+        inlineNotes = $('.oissu sup[data-note]');
+        inlineNotes.each(function() {
+            $(this)
+            .html( $(this).html().replace(/[\[\]']+/g,'') )
+            .attr( 'data-tippy-content', $('q[data-note="' + $(this).attr('data-note') + '"]').html() );
+
+        });
+
+        initToolbar(oissu);
+
+        if( !$(oissu).hasClass('oissu-warning-hidden') ){
+            unhideDialogue(oissu);
+        }
+
+    }
+
+    function initNotice(oissu){
         notice = $(`<div class="oissu-warning"></div>`)
 
         noticeContent = $(oissu).find('[data-notice-type]').last().html();
@@ -57,86 +171,91 @@ function initializeNotice( oissu ){
         $(notice).css('margin-bottom', -1* $(notice).outerHeight() );
         $(oissu).find('[data-notice-type]').remove();
     }
-}
 
-function initializeToolbar( oissu ){
-    toolbar = $(`<div class="os-toolbar">
-    <div class="os-toolbar__section tools">
-    <a class="tippy os-t-chat" data-tippy-content="Chat Format"><i data-feather="message-square"></i></a>
-    <a class="tippy os-t-fullscreen" data-tippy-content="Maximize"><i data-feather="maximize"></i></a>
-    </div>`);
-    credits = $(`<div class="os-credits"><a href="https://github.com/mgn-yuuki/enstars" target="_blank" rel="noopener noreferrer">${logo}</a></div>`);
-    if( $('[data-prev-link]').length + $('[data-next-link]').length + $('[data-directory-link]').length > 0 ){
-        navbar = $('<nav></nav>').addClass(`os-toolbar__section nav`);
-        if( $('[data-prev-link]').length > 0 ){
-            $(navbar).append(
-                $('<a></a>')
-                .attr({
-                    class: "tippy",
-                    "data-tippy-content": $('[data-prev-title]').last().attr('data-prev-title'),
-                    "href": $('[data-prev-link]').last().attr('data-prev-link')
-                })
-                .html(`<i data-feather="arrow-left"></i>`)
-            );
+
+    function initToolbar(oissu){
+        toolbar = $(`<div class="os-toolbar">
+        <div class="os-toolbar__section tools">
+        <a class="tippy os-t-chat" data-tippy-content="Chat Format"><i data-feather="message-square"></i></a>
+        <a class="tippy os-t-fullscreen" data-tippy-content="Maximize"><i data-feather="maximize"></i></a>
+        </div>`);
+        credits = $(`<div class="os-credits"><a href="https://github.com/mgn-yuuki/enstars" target="_blank" rel="noopener noreferrer">${logo}</a></div>`);
+        if( $('[data-prev-link]').length + $('[data-next-link]').length + $('[data-directory-link]').length > 0 ){
+            navbar = $('<nav></nav>').addClass(`os-toolbar__section nav`);
+            if( $('[data-prev-link]').length > 0 ){
+                $(navbar).append(
+                    $('<a></a>')
+                    .attr({
+                        class: "tippy",
+                        "data-tippy-content": $('[data-prev-title]').last().attr('data-prev-title'),
+                        "href": $('[data-prev-link]').last().attr('data-prev-link')
+                    })
+                    .html(`<i data-feather="arrow-left"></i>`)
+                );
+            }
+            if( $('[data-directory-link]').length > 0 ){
+                $(navbar).append(
+                    $('<a></a>')
+                    .attr({
+                        class: "tippy",
+                        "data-tippy-content": $('[data-directory-title]').last().attr('data-directory-title'),
+                        "href": $('[data-directory-link]').last().attr('data-directory-link')
+                    })
+                    .html(`<i data-feather="list"></i>`)
+                );
+            }
+            if( $('[data-next-link]').length > 0 ){
+                $(navbar).append(
+                    $('<a></a>')
+                    .attr({
+                        class: "tippy",
+                        "data-tippy-content": $('[data-next-title]').last().attr('data-next-title'),
+                        "href": $('[data-next-link]').last().attr('data-next-link')
+                    })
+                    .html(`<i data-feather="arrow-right"></i>`)
+                );
+            }
+            $(toolbar).append(navbar);
         }
-        if( $('[data-directory-link]').length > 0 ){
-            $(navbar).append(
-                $('<a></a>')
-                .attr({
-                    class: "tippy",
-                    "data-tippy-content": $('[data-directory-title]').last().attr('data-directory-title'),
-                    "href": $('[data-directory-link]').last().attr('data-directory-link')
-                })
-                .html(`<i data-feather="list"></i>`)
-            );
-        }
-        if( $('[data-next-link]').length > 0 ){
-            $(navbar).append(
-                $('<a></a>')
-                .attr({
-                    class: "tippy",
-                    "data-tippy-content": $('[data-next-title]').last().attr('data-next-title'),
-                    "href": $('[data-next-link]').last().attr('data-next-link')
-                })
-                .html(`<i data-feather="arrow-right"></i>`)
-            );
-        }
-        $(toolbar).append(navbar);
+        $( oissu ).prepend( $(toolbar).clone().addClass('top') );
+        $( oissu ).append( $(toolbar).clone().addClass('bottom') );
+        $( oissu ).append( credits );
+
+        let context = new Context(".os-t-chat", [
+            {
+                type: "item",
+                label: "Custom Options",
+            },
+            {
+                type: "item",
+                label: `<i data-feather="image"></i>Display Images`,
+                callback: () => {
+                    imageToggle();
+                    $('body').toggleClass('oissu-custom');
+                    oissuConfig['custom'] = !oissuConfig['custom'];
+                    updateConfig();
+                }
+            },
+            {
+                type: "item",
+                label: `<i data-feather="message-circle"></i>Bubble Format`,
+                callback: () => {
+                    bubbleToggle();
+                    $('body').toggleClass('oissu-custom');
+                    oissuConfig['custom'] = !oissuConfig['custom'];
+                    updateConfig();
+                }
+            },
+        ]);
+
+
+
     }
-    $( oissu ).prepend( $(toolbar).clone().addClass('top') );
-    $( oissu ).append( $(toolbar).clone().addClass('bottom') );
-    $( oissu ).append( credits );
-
-    var context = new Context(".os-t-chat", [
-        {
-            type: "item",
-            label: "Custom Options",
-        },
-        {
-            type: "item",
-            label: `<i data-feather="image"></i>Display Images`,
-            callback: () => {
-                imageToggle();
-                $('body').toggleClass('oissu-custom');
-                oissuConfig['custom'] = !oissuConfig['custom'];
-                updateConfig();
-            }
-        },
-        {
-            type: "item",
-            label: `<i data-feather="message-circle"></i>Bubble Format`,
-            callback: () => {
-                bubbleToggle();
-                $('body').toggleClass('oissu-custom');
-                oissuConfig['custom'] = !oissuConfig['custom'];
-                updateConfig();
-            }
-        },
-    ]);
 
 
 
-}
+}( window.oissu = window.oissu || {}, jQuery ));
+
 
 function initializeTooltips() {
     //console.log('tippy');
@@ -182,59 +301,48 @@ function initializeSiteConfig(mainCallback){
         $('body').addClass('oissu-custom')
     }
 
-    customicons = [];
-    $.getJSON('https://r.tsukina.ga/i/default/pack.json', function(data) {
+
+    mainCallback();
+
+
+    let customicons = [];
+
+    $.ajaxSetup({
+        async: false
+    });
+
+    $.getJSON('https://r.tsukina.ga/i/default/pack.json', function(data){
         icons = data;
-        if( $('[data-icon-override]').length > 0 ){
-            customicons = JSON.parse( $('[data-icon-override]').last().attr('data-icon-override') );
-        }
-        if( $('[data-icon-pack]').length > 0 ){
-            var x = 0;
-            var iconpacks = $('[data-icon-pack]');
+    });
 
-            var loopArray = function() {
-                addIconPack(iconpacks[x],function(){
-                    x++;
-                    if(x < iconpacks.length) {
-                        loopArray();
-                    }
-                    else{
+    if( $('[data-icon-override]').length > 0 ){
+        customicons = JSON.parse( $('[data-icon-override]').last().attr('data-icon-override') );
+    }
 
-                        icons = [...customicons, ...icons];
-                        mainCallback();
-                    }
-                });
-            }
-            function addIconPack(iconpack,callback) {
-                packname = $(iconpack).attr('data-icon-pack');
-                $.getJSON('https://r.tsukina.ga/i/' + packname + '/pack.json', function(data) {
-                    customicons = [...customicons, ...data];
-                    //console.log('ci '+x);
-                    //console.log(customicons);
-                    callback();
-                });
+    if( $('[data-icon-pack]').length > 0 ){
+        let iconpacks = $('[data-icon-pack]');
+        $('[data-icon-pack]').each(function(){
+            packname = $(this).attr('data-icon-pack');
+            $.getJSON('https://r.tsukina.ga/i/' + packname + '/pack.json', function(data) {
+                customicons = [...customicons, ...data];
+            });
+        });
+        icons = [...customicons, ...icons];
+    }
 
-            }
-            loopArray();
-        }
-        else{
-            mainCallback();
-        }
+    $('img.os-identifier').each(function(){
+        var characterName = $(this).closest('.os-unit').first().attr('character');
+        characterName = characterName.toLowerCase();
+        console.log(characterName);
+        $(this).attr('src', icons.find(x => x.commonname.toLowerCase() === characterName).filename)
     });
 }
-
 
 function updateConfig(){
     localStorage.setItem('osck', JSON.stringify(oissuConfig));
 }
 
 function unhideDialogue(oissu){
-    /*
-    $( ".oissu.oissu-loading" ).animate({
-        height: 'auto'
-    }, 5000, function() {
-        $('.oissu').removeClass('oissu-loading');
-    })*/
     var el = $(oissu).find('div.oissu'),
         curHeight = el.height(),
         autoHeight = el.css('height', 'auto').height();
@@ -250,106 +358,7 @@ function unhideDialogue(oissu){
     $(oissu).find('.oissu-warning').animate({
         'margin-bottom': 0
     }, 200)
-    $(oissu).find('.oissu-warning__confirm').slideUp();
-
-}
-
-function initializeOissu(oissu){
-    var oissuDialogue = $(oissu).find('div.oissu');
-    console.log(oissu);
-    var cache = $(`<div class="os-exclude"></div>`);
-    var dialogue = $(`<div></div>`);
-    chat = $(oissuDialogue).children();
-    chat.each( function() {
-        //console.log($(this).html());
-        var newUnit =
-            $(this).html().startsWith("<b") ||
-            $(this).html().startsWith("<strong") ||
-            $(this).hasClass('end'),
-            rich =
-            $(this).prop('outerHTML').startsWith("<div") ||
-            $(this).prop('outerHTML').startsWith("<blockquote"),
-            block =
-            $(this).prop('outerHTML').startsWith("<blockquote");
-        if( newUnit || rich ){
-            if(newUnit){
-                var name = $(this).children().first().text().replace(":", "");
-                $(this).children().first().remove();
-            }
-            if( !$(cache).hasClass('os-exclude') ){
-                var unit = $('<div></div>').addClass('os-unit');
-                if( $(cache).is("[character]") ){
-                    var thisName = $(cache).attr('character');
-                    var iconFile = "";
-                    try{
-                        iconFile = icons.find(x => x.commonname === thisName).filename;
-                    }catch(e){
-                        iconFile = `https://r.tsukina.ga/i/default/Icon.png`;
-                    }
-                    $(unit).append( $('<img></img>').addClass('os-identifier').attr(`src`, iconFile) );
-                    $(unit).append( $('<span></span>').addClass('os-identifier').text(thisName) );
-                }
-                $(unit).append(cache);
-                $(dialogue).append(unit);
-            }
-
-            if( newUnit ) {
-                cache = $(`<div></div>`).addClass(`os-content os-lines`);
-                $(cache).attr('character', name)
-                $(cache).append(`<p>` + $(this).html() + `</p>`);
-            } else {
-                cache = $(`<div></div>`).addClass(`os-content os-rich`);
-                $(cache).append($(this).html());
-                if(block){
-                    $(cache).addClass('os-block');
-                    $(cache).children().each(function() {
-                        if($(this).text().toLowerCase().startsWith("location")){
-                            $(this).prepend(`<i data-feather="map-pin"></i>`)
-                            .wrap('<div></div>').parent().addClass('os-location')
-                            .prepend(`<span class="os-hr left"></span><span class="os-hr right"></span>`);
-                        }
-                        else if(
-                            $(this).text().toLowerCase().startsWith("season")
-                        ){
-                            $(this).addClass('os-season').prepend(`<i data-feather="thermometer"></i>`);
-                        }
-                        else if(
-                            $(this).text().toLowerCase().startsWith("time")
-                        ){
-                            $(this).addClass('os-time').prepend(`<i data-feather="clock"></i>`);
-                        }
-                        else {
-                            $(this).wrap('<div></div>').parent().addClass('os-narration');
-
-
-                        }
-                    });
-                }
-                //console.log('.');
-            }
-
-        }
-        else {
-            $(cache).append(`<p>` + $(this).html() + `</p>`);
-        }
-        $(this).remove();
-
-    });
-    $(oissuDialogue).append( $(dialogue).children() );
-    $(oissu).removeClass('oissu__embed-loading');
-
-    inlineNotes = $('.oissu sup[data-note]');
-    inlineNotes.each(function() {
-        $(this)
-        .html( $(this).html().replace(/[\[\]']+/g,'') )
-        .attr( 'data-tippy-content', $('q[data-note="' + $(this).attr('data-note') + '"]').html() );
-
-    });
-
-    if( !$(oissu).hasClass('oissu-warning-hidden') ){
-        unhideDialogue(oissu);
-    }
-    //ScrollReveal().reveal('.os-unit');
+    $(oissu).find('.oissu-warning__confirm').hide();
 
 }
 
@@ -439,37 +448,81 @@ function loadScript(scriptUrl) {
   });
 }
 
+//
+// async function cirosantilli_load_scripts(script_urls) {
+//     function load(script_url) {
+//         return new Promise(function(resolve, reject) {
+//             if (cirosantilli_load_scripts.loaded.has(script_url)) {
+//                 resolve();
+//             } else {
+//                 var script = document.createElement('script');
+//                 script.onload = resolve;
+//                 script.src = script_url
+//                 document.head.appendChild(script);
+//             }
+//         });
+//     }
+//     var promises = [];
+//     for (const script_url of script_urls) {
+//         promises.push(load(script_url));
+//     }
+//     await Promise.all(promises);
+//     for (const script_url of script_urls) {
+//         cirosantilli_load_scripts.loaded.add(script_url);
+//     }
+// }
+// cirosantilli_load_scripts.loaded = new Set();
+//
+// (async () => {
+//     await cirosantilli_load_scripts([
+//         'https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.min.js',
+//         'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js',
+//     ]);
+//
+//     // Now do stuff with those scripts.
+//
+// })();
 
-$(function() {
-    //initializeNotice();
-    //$('body').html( $('body').html().replace(/<q class="dialogue-start"><\/q>(.+?)<q class="dialogue-end"><\/q>/gs, '<div class="oissu__embed"><div class="oissu oissu-loading">$1</div></div>' ) );
-    $('div.oissu').addClass('oissu-loading').wrap(`<div class="oissu__embed oissu__embed-loading"></div>`).before(`<div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>`);
-    initializeSiteConfig(function (){
-        $('.oissu__embed').each(function(){
-            initializeNotice( $(this) );
-            initializeOissu( $(this) );
-            initializeToolbar( $(this) );
 
-        })
-        initializeFullscreen();
-        initializeTooltips();
+$(window).on('load', function() {
 
 
-        feather.replace({ 'width': '1em', 'height': '1em', 'stroke-width': '2px' });
-        $('.unhide').click(function () {
-            unhideDialogue( $(this).closest('.oissu__embed') );
-            $( $(this).closest('.oissu-warning') ).addClass('hidden');
-            setTimeout(function () {
-                $( $(this).closest('.oissu-warning') ).hide();
-            }, 5000);
+    const script = document.createElement('script');
+    script.src = 'http://localhost:8080/src/js/bundle.js';
+    document.head.appendChild(script);
+
+    script.addEventListener('load',function(){
+        $('div.oissu')
+        .addClass('oissu-loading')
+        .wrap(`<div class="oissu__embed oissu__embed-loading"></div>`)
+        .before(`<div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>`);
+
+        initializeSiteConfig(function (){
+            $('.oissu__embed').each(function(){
+                oissu.format($(this));
+            })
+            initializeFullscreen();
+            initializeTooltips();
+
+
+            feather.replace({ 'width': '1em', 'height': '1em', 'stroke-width': '2px' });
+            $('.unhide').click(function () {
+                unhideDialogue( $(this).closest('.oissu__embed') );
+                $( $(this).closest('.oissu-warning') ).addClass('hidden');
+                setTimeout(function () {
+                    $( $(this).closest('.oissu-warning') ).hide();
+                }, 5000);
+            });
+            $('.os-t-chat').click(function() {
+                chatToggle()
+            });
+            $('.os-t-fullscreen').click(function() {
+                fullscreenToggle( $(this).closest('.oissu__embed') )
+            });
         });
-        $('.os-t-chat').click(function(){
-            chatToggle();
-        });
-        $('.os-t-fullscreen').click(function(){
-            fullscreenToggle( $(this).closest('.oissu__embed') );
-        });
+
     });
+
 
 
 

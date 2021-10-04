@@ -11,17 +11,16 @@ var logo = `<svg width="1093" height="421" viewBox="0 0 1093 421" fill="none" xm
 <path class="oissu-logo__letter" d="M785.105 146.696H818.93V251.446H785.105V234.995C782.314 240.466 778.896 244.647 774.852 247.535C769.356 251.411 763.155 253.349 756.249 253.349C749.272 253.349 742.719 252.151 736.588 249.755C730.458 247.359 725.525 243.272 721.79 237.493C717.985 231.715 716.082 223.752 716.082 213.605V146.696H749.907V209.694C749.907 214.486 751.14 218.009 753.606 220.264C756.002 222.59 759.103 223.752 762.908 223.752C766.361 223.752 769.814 222.907 773.267 221.216C776.649 219.524 779.468 216.635 781.723 212.548C783.978 208.461 785.105 202.788 785.105 195.53V146.696Z" fill="white"/>
 <path class="oissu-logo__letter" d="M898.454 193.82V111.654H914.882L947.738 134.114V166.971L914.882 144.51V211.301C916.304 240.823 901.659 254.829 878.944 254.829C863.776 254.829 849.315 242.838 849.315 224.685C849.315 206.532 856.919 191.071 878.944 189.094C884.917 188.558 893.608 191.027 898.454 193.82Z" fill="white"/>
 </svg>
-`
-
+`;
 
 var oissuConfig = {
-    "bubble": false,
-    "image": false,
-    "custom": false
+  bubble: false,
+  image: false,
+  custom: false
 };
 
-(function( oissu, $, undefined ) {
-    /*
+(function(oissu, $, undefined) {
+  /*
     //Private Property
     var isHot = true;
 
@@ -44,486 +43,546 @@ var oissuConfig = {
         }
     }*/
 
+  oissu.format = function(oissu) {
+    if ($(oissu).find("[data-notice-type]").length > 0) {
+      initNotice(oissu);
+    }
 
-
-    oissu.format = function(oissu) {
-
-
-        if( $(oissu).find('[data-notice-type]').length > 0 ){
-            initNotice(oissu);
+    var oissuDialogue = $(oissu)
+      .find("div.oissu")
+      .append(`<div class="end"></div>`);
+    console.log(oissu);
+    var cache = $(`<div class="os-exclude"></div>`);
+    var dialogue = $(`<div></div>`);
+    chat = $(oissuDialogue).children();
+    chat.each(function() {
+      var newUnit =
+          $(this)
+            .html()
+            .startsWith("<b") ||
+          $(this)
+            .html()
+            .startsWith("<strong") ||
+          $(this).hasClass("end"),
+        rich =
+          $(this)
+            .prop("outerHTML")
+            .startsWith("<div") ||
+          $(this)
+            .prop("outerHTML")
+            .startsWith("<blockquote") ||
+          $(this)
+            .prop("outerHTML")
+            .startsWith("<figure") ||
+          $(this)
+            .prop("outerHTML")
+            .startsWith("<img"),
+        block = $(this)
+          .prop("outerHTML")
+          .startsWith("<blockquote");
+      if (newUnit || rich) {
+        if (newUnit) {
+          var name = $(this)
+            .children()
+            .first()
+            .text()
+            .replace(":", "");
+          $(this)
+            .children()
+            .first()
+            .remove();
+        }
+        if (!$(cache).hasClass("os-exclude")) {
+          var unit = $("<div></div>").addClass("os-unit");
+          if ($(cache).is("[character]")) {
+            $(unit).attr("character", $(cache).attr("character"));
+            var thisName = $(cache).attr("character");
+            var iconFile = "";
+            try {
+              iconFile = icons.find(x => x.commonname === thisName).filename;
+            } catch (e) {
+              iconFile = `https://r.tsukina.ga/i/default/Icon.png`;
+            }
+            $(unit).append(
+              $("<img></img>")
+                .addClass("os-identifier")
+                .attr(`src`, iconFile)
+            );
+            $(unit).append(
+              $("<span></span>")
+                .addClass("os-identifier")
+                .text(thisName)
+            );
+          }
+          $(unit).append(cache);
+          $(dialogue).append(unit);
         }
 
-        var oissuDialogue = $(oissu).find('div.oissu');
-        console.log(oissu);
-        var cache = $(`<div class="os-exclude"></div>`);
-        var dialogue = $(`<div></div>`);
-        chat = $(oissuDialogue).children();
-        chat.each( function() {
-            var newUnit =
-                $(this).html().startsWith("<b") ||
-                $(this).html().startsWith("<strong") ||
-                $(this).hasClass('end'),
-                rich =
-                $(this).prop('outerHTML').startsWith("<div") ||
-                $(this).prop('outerHTML').startsWith("<blockquote"),
-                block =
-                $(this).prop('outerHTML').startsWith("<blockquote");
-            if( newUnit || rich ){
-                if(newUnit){
-                    var name = $(this).children().first().text().replace(":", "");
-                    $(this).children().first().remove();
-                }
-                if( !$(cache).hasClass('os-exclude') ){
-                    var unit = $('<div></div>').addClass('os-unit');
-                    if( $(cache).is("[character]") ){
-                        $(unit).attr('character', $(cache).attr('character'));
-                        var thisName = $(cache).attr('character');
-                        var iconFile = "";
-                        try{
-                            iconFile = icons.find(x => x.commonname === thisName).filename;
-                        }catch(e){
-                            iconFile = `https://r.tsukina.ga/i/default/Icon.png`;
-                        }
-                        $(unit).append( $('<img></img>').addClass('os-identifier').attr(`src`, iconFile) );
-                        $(unit).append( $('<span></span>').addClass('os-identifier').text(thisName) );
-                    }
-                    $(unit).append(cache);
-                    $(dialogue).append(unit);
-                }
-
-                if( newUnit ) {
-                    cache = $(`<div></div>`).addClass(`os-content os-lines`);
-                    $(cache).attr('character', name)
-                    $(cache).append(`<p>` + $(this).html() + `</p>`);
+        if (newUnit) {
+          cache = $(`<div></div>`).addClass(`os-content os-lines`);
+          $(cache).attr("character", name);
+          $(cache).append(`<p>` + $(this).html() + `</p>`);
+        } else {
+          cache = $(`<div></div>`).addClass(`os-content os-rich`);
+          $(cache).append($(this).html());
+          if (block) {
+            $(cache).addClass("os-block");
+            $(cache)
+              .children()
+              .each(function() {
+                if (
+                  $(this)
+                    .text()
+                    .toLowerCase()
+                    .startsWith("location")
+                ) {
+                  $(this)
+                    .prepend(`<i data-feather="map-pin"></i>`)
+                    .wrap("<div></div>")
+                    .parent()
+                    .addClass("os-location")
+                    .prepend(
+                      `<span class="os-hr left"></span><span class="os-hr right"></span>`
+                    );
+                } else if (
+                  $(this)
+                    .text()
+                    .toLowerCase()
+                    .startsWith("season")
+                ) {
+                  $(this)
+                    .addClass("os-season")
+                    .prepend(`<i data-feather="thermometer"></i>`);
+                } else if (
+                  $(this)
+                    .text()
+                    .toLowerCase()
+                    .startsWith("time")
+                ) {
+                  $(this)
+                    .addClass("os-time")
+                    .prepend(`<i data-feather="clock"></i>`);
                 } else {
-                    cache = $(`<div></div>`).addClass(`os-content os-rich`);
-                    $(cache).append($(this).html());
-                    if(block){
-                        $(cache).addClass('os-block');
-                        $(cache).children().each(function() {
-                            if($(this).text().toLowerCase().startsWith("location")){
-                                $(this).prepend(`<i data-feather="map-pin"></i>`)
-                                .wrap('<div></div>').parent().addClass('os-location')
-                                .prepend(`<span class="os-hr left"></span><span class="os-hr right"></span>`);
-                            }
-                            else if(
-                                $(this).text().toLowerCase().startsWith("season")
-                            ){
-                                $(this).addClass('os-season').prepend(`<i data-feather="thermometer"></i>`);
-                            }
-                            else if(
-                                $(this).text().toLowerCase().startsWith("time")
-                            ){
-                                $(this).addClass('os-time').prepend(`<i data-feather="clock"></i>`);
-                            }
-                            else {
-                                $(this).wrap('<div></div>').parent().addClass('os-narration');
-
-
-                            }
-                        });
-                    }
-                    //console.log('.');
+                  $(this)
+                    .wrap("<div></div>")
+                    .parent()
+                    .addClass("os-narration");
                 }
-
-            }
-            else {
-                $(cache).append(`<p>` + $(this).html() + `</p>`);
-            }
-            $(this).remove();
-
-        });
-        $(oissuDialogue).append( $(dialogue).children() );
-        $(oissu).removeClass('oissu__embed-loading');
-
-        inlineNotes = $('.oissu sup[data-note]');
-        inlineNotes.each(function() {
-            $(this)
-            .html( $(this).html().replace(/[\[\]']+/g,'') )
-            .attr( 'data-tippy-content', $('q[data-note="' + $(this).attr('data-note') + '"]').html() );
-
-        });
-
-        initToolbar(oissu);
-
-        if( !$(oissu).hasClass('oissu-warning-hidden') ){
-            unhideDialogue(oissu);
+              });
+          }
+          //console.log('.');
         }
+      } else {
+        $(cache).append(`<p>` + $(this).html() + `</p>`);
+      }
+      $(this).remove();
+    });
+    $(oissuDialogue).append($(dialogue).children());
+    $(oissu).removeClass("oissu__embed-loading");
 
+    inlineNotes = $(".oissu sup[data-note]");
+    inlineNotes.each(function() {
+      $(this)
+        .html(
+          $(this)
+            .html()
+            .replace(/[\[\]']+/g, "")
+        )
+        .attr(
+          "data-tippy-content",
+          $('q[data-note="' + $(this).attr("data-note") + '"]').html()
+        );
+    });
+
+    initToolbar(oissu);
+
+    if (!$(oissu).hasClass("oissu-notice-prompt-visible")) {
+      unhideDialogue(oissu);
+    }
+  };
+
+  function initNotice(oissu) {
+    notice = $(`<div class="oissu-notice"></div>`);
+
+    noticeContent = $(oissu)
+      .find("[data-notice-type]")
+      .last()
+      .html();
+    noticeType = $(oissu)
+      .find("[data-notice-type]")
+      .last()
+      .attr("data-notice-type");
+    noticePrompt = $("[data-notice-prompt]")
+      .last()
+      .attr("data-notice-prompt");
+
+    notice.addClass("os-notice__" + noticeType);
+    notice.append(noticeContent);
+
+    if (noticePrompt) {
+      $(notice).addClass("oissu-notice-prompt");
+      $(notice).append(
+        `<div class="oissu-notice__confirm"><button class="unhide" type="button">I understand</button></div>`
+      );
+      $(oissu).addClass("oissu-notice-prompt-visible");
     }
 
-    function initNotice(oissu){
-        notice = $(`<div class="oissu-warning"></div>`)
+    $(oissu).prepend(notice);
+    $(notice).css("margin-bottom", -1 * $(notice).outerHeight());
+    $(oissu)
+      .find("[data-notice-type]")
+      .remove();
+  }
 
-        noticeContent = $(oissu).find('[data-notice-type]').last().html();
-        noticeType = $(oissu).find('[data-notice-type]').last().attr('data-notice-type');
-        noticeHidden = $('[data-notice-hidden]').last().attr('data-notice-hidden');
-
-        notice.addClass('os-notice__' + noticeType);
-        notice.append(noticeContent);
-
-        if(noticeHidden){
-            $(notice).append(`<div class="oissu-warning__confirm"><button class="unhide" type="button">I understand</button></div>`);
-            $(oissu).addClass('oissu-warning-hidden');
-        }
-
-        $(oissu).prepend(notice);
-        $(notice).css('margin-bottom', -1* $(notice).outerHeight() );
-        $(oissu).find('[data-notice-type]').remove();
-    }
-
-
-    function initToolbar(oissu){
-        toolbar = $(`<div class="os-toolbar">
+  function initToolbar(oissu) {
+    toolbar = $(`<div class="os-toolbar">
         <div class="os-toolbar__section tools">
         <a class="tippy os-t-chat" data-tippy-content="Chat Format"><i data-feather="message-square"></i></a>
         <a class="tippy os-t-fullscreen" data-tippy-content="Maximize"><i data-feather="maximize"></i></a>
         </div>`);
-        credits = $(`<div class="os-credits"><a href="https://github.com/mgn-yuuki/enstars" target="_blank" rel="noopener noreferrer">${logo}</a></div>`);
-        if( $('[data-prev-link]').length + $('[data-next-link]').length + $('[data-directory-link]').length > 0 ){
-            navbar = $('<nav></nav>').addClass(`os-toolbar__section nav`);
-            if( $('[data-prev-link]').length > 0 ){
-                $(navbar).append(
-                    $('<a></a>')
-                    .attr({
-                        class: "tippy",
-                        "data-tippy-content": $('[data-prev-title]').last().attr('data-prev-title'),
-                        "href": $('[data-prev-link]').last().attr('data-prev-link')
-                    })
-                    .html(`<i data-feather="arrow-left"></i>`)
-                );
-            }
-            if( $('[data-directory-link]').length > 0 ){
-                $(navbar).append(
-                    $('<a></a>')
-                    .attr({
-                        class: "tippy",
-                        "data-tippy-content": $('[data-directory-title]').last().attr('data-directory-title'),
-                        "href": $('[data-directory-link]').last().attr('data-directory-link')
-                    })
-                    .html(`<i data-feather="list"></i>`)
-                );
-            }
-            if( $('[data-next-link]').length > 0 ){
-                $(navbar).append(
-                    $('<a></a>')
-                    .attr({
-                        class: "tippy",
-                        "data-tippy-content": $('[data-next-title]').last().attr('data-next-title'),
-                        "href": $('[data-next-link]').last().attr('data-next-link')
-                    })
-                    .html(`<i data-feather="arrow-right"></i>`)
-                );
-            }
-            $(toolbar).append(navbar);
-        }
-        $( oissu ).prepend( $(toolbar).clone().addClass('top') );
-        $( oissu ).append( $(toolbar).clone().addClass('bottom') );
-        $( oissu ).append( credits );
-
-        let context = new Context(".os-t-chat", [
-            {
-                type: "item",
-                label: "Custom Options",
-            },
-            {
-                type: "item",
-                label: `<i data-feather="image"></i>Display Images`,
-                callback: () => {
-                    imageToggle();
-                    $('body').toggleClass('oissu-custom');
-                    oissuConfig['custom'] = !oissuConfig['custom'];
-                    updateConfig();
-                }
-            },
-            {
-                type: "item",
-                label: `<i data-feather="message-circle"></i>Bubble Format`,
-                callback: () => {
-                    bubbleToggle();
-                    $('body').toggleClass('oissu-custom');
-                    oissuConfig['custom'] = !oissuConfig['custom'];
-                    updateConfig();
-                }
-            },
-        ]);
-
-
-
+    credits = $(
+      `<div class="os-credits"><a href="https://github.com/mgn-yuuki/enstars" target="_blank" rel="noopener noreferrer">${logo}</a></div>`
+    );
+    if (
+      $("[data-prev-link]").length +
+        $("[data-next-link]").length +
+        $("[data-directory-link]").length >
+      0
+    ) {
+      navbar = $("<nav></nav>").addClass(`os-toolbar__section nav`);
+      if ($("[data-prev-link]").length > 0) {
+        $(navbar).append(
+          $("<a></a>")
+            .attr({
+              class: "tippy",
+              "data-tippy-content": $("[data-prev-title]")
+                .last()
+                .attr("data-prev-title"),
+              href: $("[data-prev-link]")
+                .last()
+                .attr("data-prev-link")
+            })
+            .html(`<i data-feather="arrow-left"></i>`)
+        );
+      }
+      if ($("[data-directory-link]").length > 0) {
+        $(navbar).append(
+          $("<a></a>")
+            .attr({
+              class: "tippy",
+              "data-tippy-content": $("[data-directory-title]")
+                .last()
+                .attr("data-directory-title"),
+              href: $("[data-directory-link]")
+                .last()
+                .attr("data-directory-link")
+            })
+            .html(`<i data-feather="list"></i>`)
+        );
+      }
+      if ($("[data-next-link]").length > 0) {
+        $(navbar).append(
+          $("<a></a>")
+            .attr({
+              class: "tippy",
+              "data-tippy-content": $("[data-next-title]")
+                .last()
+                .attr("data-next-title"),
+              href: $("[data-next-link]")
+                .last()
+                .attr("data-next-link")
+            })
+            .html(`<i data-feather="arrow-right"></i>`)
+        );
+      }
+      $(toolbar).append(navbar);
     }
+    $(oissu).prepend(
+      $(toolbar)
+        .clone()
+        .addClass("top")
+    );
+    $(oissu).append(
+      $(toolbar)
+        .clone()
+        .addClass("bottom")
+    );
+    $(oissu).append(credits);
 
-
-
-}( window.oissu = window.oissu || {}, jQuery ));
-
+    let context = new Context(".os-t-chat", [
+      {
+        type: "item",
+        label: "Custom Options"
+      },
+      {
+        type: "item",
+        label: `<i data-feather="image"></i>Display Images`,
+        callback: () => {
+          imageToggle();
+          $("body").toggleClass("oissu-custom");
+          oissuConfig["custom"] = !oissuConfig["custom"];
+          updateConfig();
+        }
+      },
+      {
+        type: "item",
+        label: `<i data-feather="message-circle"></i>Bubble Format`,
+        callback: () => {
+          bubbleToggle();
+          $("body").toggleClass("oissu-custom");
+          oissuConfig["custom"] = !oissuConfig["custom"];
+          updateConfig();
+        }
+      }
+    ]);
+  }
+})((window.oissu = window.oissu || {}), jQuery);
 
 function initializeTooltips() {
-    //console.log('tippy');
-    tippy.createSingleton(tippy('.os-toolbar .tippy'), {
-        animation: 'shift-away',
-        offset: [0, 5],
-        delay: [0, 200],
-        zIndex: 99999999999,
-        theme: 'q-button',
-        moveTransition: 'transform 0.25s ease'
-    });
-    tippy('.oissu sup', {
-
-        maxWidth: 350,
-        allowHTML: true,
-        animation: 'shift-away',
-        offset: [0, 5],
-        delay: [0, 200],
-        zIndex: 99999999999,
-        theme: 'q-note',
-        moveTransition: 'transform 0.25s ease'
-
-    });
-
+  //console.log('tippy');
+  tippy.createSingleton(tippy(".os-toolbar .tippy"), {
+    animation: "shift-away",
+    offset: [0, 5],
+    delay: [0, 200],
+    zIndex: 99999999999,
+    theme: "q-button",
+    moveTransition: "transform 0.25s ease"
+  });
+  tippy(".oissu sup", {
+    maxWidth: 350,
+    allowHTML: true,
+    animation: "shift-away",
+    offset: [0, 5],
+    delay: [0, 200],
+    zIndex: 99999999999,
+    theme: "q-note",
+    moveTransition: "transform 0.25s ease"
+  });
 }
 
-function initializeSiteConfig(mainCallback){
+function initializeSiteConfig(mainCallback) {
+  var osck = localStorage.getItem("osck");
+  if (osck == null) {
+    osck = JSON.stringify(oissuConfig);
+    localStorage.setItem("osck", osck);
+  }
+  oissuConfig = JSON.parse(osck);
+  console.log(oissuConfig);
+  if (oissuConfig["image"]) {
+    $("body").addClass("oissu-image");
+  }
+  if (oissuConfig["bubble"]) {
+    $("body").addClass("oissu-bubble");
+  }
+  if (oissuConfig["custom"]) {
+    $("body").addClass("oissu-custom");
+  }
 
-    var osck = localStorage.getItem('osck');
-    if (osck == null){
-        osck = JSON.stringify(oissuConfig);
-        localStorage.setItem('osck', osck);
-    }
-    oissuConfig = JSON.parse(osck);
-    console.log(oissuConfig);
-    if(oissuConfig['image']){
-        $('body').addClass('oissu-image')
-    }
-    if(oissuConfig['bubble']){
-        $('body').addClass('oissu-bubble')
-    }
-    if(oissuConfig['custom']){
-        $('body').addClass('oissu-custom')
-    }
+  mainCallback();
 
+  let customicons = [];
 
-    mainCallback();
+  $.ajaxSetup({
+    async: false
+  });
 
+  $.getJSON("https://r.tsukina.ga/i/default/_pack.json", function(data) {
+    icons = data.icons;
+  });
 
-    let customicons = [];
+  if ($("[data-icon-override]").length > 0) {
+    customicons = JSON.parse(
+      $("[data-icon-override]")
+        .last()
+        .attr("data-icon-override")
+    );
+  }
 
-    $.ajaxSetup({
-        async: false
+  if ($("[data-icon-pack]").length > 0) {
+    let iconpacks = $("[data-icon-pack]");
+    $("[data-icon-pack]").each(function() {
+      packname = $(this).attr("data-icon-pack");
+      $.getJSON("https://r.tsukina.ga/i/" + packname + "/_pack.json", function(
+        data
+      ) {
+        customicons = [...customicons, ...data.icons];
+      });
     });
+    icons = [...customicons, ...icons];
+  }
 
-    $.getJSON('https://r.tsukina.ga/i/default/pack.json', function(data){
-        icons = data;
-    });
-
-    if( $('[data-icon-override]').length > 0 ){
-        customicons = JSON.parse( $('[data-icon-override]').last().attr('data-icon-override') );
-    }
-
-    if( $('[data-icon-pack]').length > 0 ){
-        let iconpacks = $('[data-icon-pack]');
-        $('[data-icon-pack]').each(function(){
-            packname = $(this).attr('data-icon-pack');
-            $.getJSON('https://r.tsukina.ga/i/' + packname + '/pack.json', function(data) {
-                customicons = [...customicons, ...data];
-            });
-        });
-        icons = [...customicons, ...icons];
-    }
-
-    $('img.os-identifier').each(function(){
-        var characterName = $(this).closest('.os-unit').first().attr('character');
-        characterName = characterName.toLowerCase();
-        console.log(characterName);
-        $(this).attr('src', icons.find(x => x.commonname.toLowerCase() === characterName).filename)
-    });
+  $("img.os-identifier").each(function() {
+    var characterName = $(this)
+      .closest(".os-unit")
+      .first()
+      .attr("character");
+    characterName = characterName.toLowerCase();
+    console.log(characterName);
+    $(this).attr(
+      "src",
+      icons.find(x => x.commonname.toLowerCase() === characterName).filename
+    );
+  });
 }
 
-function updateConfig(){
-    localStorage.setItem('osck', JSON.stringify(oissuConfig));
+function updateConfig() {
+  localStorage.setItem("osck", JSON.stringify(oissuConfig));
 }
 
-function unhideDialogue(oissu){
-    var el = $(oissu).find('div.oissu'),
-        curHeight = el.height(),
-        autoHeight = el.css('height', 'auto').height();
-    el.height(curHeight).animate({
-        height: autoHeight,
-        '-webkit-mask-position': '0% 0%',
-        'mask-position': `0% 0%`,
-        '-webkit-mask-position-y': '0%'
-    }, 200, function(){
-        $(oissu).find('div.oissu').removeClass('oissu-loading');
-        $(oissu).find('div.oissu').css('height','');
-    });
-    $(oissu).find('.oissu-warning').animate({
-        'margin-bottom': 0
-    }, 200)
-    $(oissu).find('.oissu-warning__confirm').hide();
-
+function unhideDialogue(oissu) {
+  var el = $(oissu).find("div.oissu"),
+    curHeight = el.height(),
+    autoHeight = el.css("height", "auto").height();
+  el.height(curHeight).animate(
+    {
+      height: autoHeight,
+      "-webkit-mask-position": "0% 0%",
+      "mask-position": `0% 0%`,
+      "-webkit-mask-position-y": "0%"
+    },
+    200,
+    function() {
+      $(oissu)
+        .find("div.oissu")
+        .removeClass("oissu-loading");
+      $(oissu)
+        .find("div.oissu")
+        .css("height", "");
+    }
+  );
+  $(oissu)
+    .find(".oissu-notice")
+    .animate(
+      {
+        "margin-bottom": 0
+      },
+      200
+    );
+  $(oissu)
+    .find(".oissu-notice__confirm")
+    .hide();
 }
 
-function initializeFullscreen(){
-    $('body').prepend(`
+function initializeFullscreen() {
+  $("body").prepend(`
         <div class="oissu__background fullscreen">
         <div class="oissu__wrapper fullscreen">
         <div class="oissu fullscreen">
         <div class="oissu__embed fullscreen">
-        </div></div></div></div>`)
+        </div></div></div></div>`);
 
-    /*$('body').prepend(`<div class="oissu__background fullscreen">
+  /*$('body').prepend(`<div class="oissu__background fullscreen">
     <div class="oissu__wrapper fullscreen">
     <div class="oissu fullscreen">` + maindialogue +
     `</div></div></div>`);*/
-    $('.oissu__background.fullscreen').click(function() {
-        $('.oissu__background').fadeOut(200);
-        $('body').removeClass('oissu-expanded');
-
-    }).children().click(function(e) {
-        return false;
+  $(".oissu__background.fullscreen")
+    .click(function() {
+      $(".oissu__background").fadeOut(200);
+      $("body").removeClass("oissu-expanded");
+    })
+    .children()
+    .click(function(e) {
+      return false;
     });
 }
 
-function fullscreenToggle( oissu ){
-    $('.oissu__embed.fullscreen').html( $(oissu).html() );
-    $('.oissu__embed.fullscreen .os-t-fullscreen')
-    .html( `<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2px" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minimize"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"></path></svg>` )
-    .attr('data-tippy-content', 'Minimize');
+function fullscreenToggle(oissu) {
+  $(".oissu__embed.fullscreen").html($(oissu).html());
+  $(".oissu__embed.fullscreen .os-t-fullscreen")
+    .html(
+      `<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2px" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minimize"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"></path></svg>`
+    )
+    .attr("data-tippy-content", "Minimize");
 
+  $(".oissu__background").fadeToggle(200);
+  $("body").toggleClass("oissu-expanded");
 
-
-    $('.oissu__background').fadeToggle(200);
-    $('body').toggleClass('oissu-expanded');
-
-
-    $('.oissu__embed.fullscreen .os-t-chat').click(function(){
-        chatToggle();
-    });
-    $('.oissu__embed.fullscreen .os-t-fullscreen').click(function(){
-        fullscreenToggle( $(this).closest('.oissu__embed') );
-    });
+  $(".oissu__embed.fullscreen .os-t-chat").click(function() {
+    chatToggle();
+  });
+  $(".oissu__embed.fullscreen .os-t-fullscreen").click(function() {
+    fullscreenToggle($(this).closest(".oissu__embed"));
+  });
 }
 
-function bubbleToggle(){
-    $('body').toggleClass('oissu-bubble');
-    oissuConfig['bubble'] = !oissuConfig['bubble'];
-    updateConfig();
+function bubbleToggle() {
+  $("body").toggleClass("oissu-bubble");
+  oissuConfig["bubble"] = !oissuConfig["bubble"];
+  updateConfig();
 }
 
-function imageToggle(){
-    $('body').toggleClass('oissu-image');
-    oissuConfig['image'] = !oissuConfig['image'];
-    updateConfig();
+function imageToggle() {
+  $("body").toggleClass("oissu-image");
+  oissuConfig["image"] = !oissuConfig["image"];
+  updateConfig();
 }
 
-function chatToggle(){
-    if( $('body').hasClass('oissu-custom') ){
-        $('body').removeClass('oissu-image');
-        $('body').removeClass('oissu-bubble');
-        $('body').removeClass('oissu-custom');
-        oissuConfig['bubble'] = false;
-        oissuConfig['image'] = false;
-        oissuConfig['custom'] = false;
-    }
-    else {
-        $('body').toggleClass('oissu-image');
-        $('body').toggleClass('oissu-bubble');
-        oissuConfig['bubble'] = !oissuConfig['bubble'];
-        oissuConfig['image'] = !oissuConfig['image'];
-    }
-    updateConfig();
+function chatToggle() {
+  if ($("body").hasClass("oissu-custom")) {
+    $("body").removeClass("oissu-image");
+    $("body").removeClass("oissu-bubble");
+    $("body").removeClass("oissu-custom");
+    oissuConfig["bubble"] = false;
+    oissuConfig["image"] = false;
+    oissuConfig["custom"] = false;
+  } else {
+    $("body").toggleClass("oissu-image");
+    $("body").toggleClass("oissu-bubble");
+    oissuConfig["bubble"] = !oissuConfig["bubble"];
+    oissuConfig["image"] = !oissuConfig["image"];
+  }
+  updateConfig();
 }
 
 function loadScript(scriptUrl) {
-  const script = document.createElement('script');
+  const script = document.createElement("script");
   script.src = scriptUrl;
   document.body.appendChild(script);
 
   return new Promise((res, rej) => {
     script.onload = function() {
       res();
-    }
-    script.onerror = function () {
+    };
+    script.onerror = function() {
       rej();
-    }
+    };
   });
 }
 
-//
-// async function cirosantilli_load_scripts(script_urls) {
-//     function load(script_url) {
-//         return new Promise(function(resolve, reject) {
-//             if (cirosantilli_load_scripts.loaded.has(script_url)) {
-//                 resolve();
-//             } else {
-//                 var script = document.createElement('script');
-//                 script.onload = resolve;
-//                 script.src = script_url
-//                 document.head.appendChild(script);
-//             }
-//         });
-//     }
-//     var promises = [];
-//     for (const script_url of script_urls) {
-//         promises.push(load(script_url));
-//     }
-//     await Promise.all(promises);
-//     for (const script_url of script_urls) {
-//         cirosantilli_load_scripts.loaded.add(script_url);
-//     }
-// }
-// cirosantilli_load_scripts.loaded = new Set();
-//
-// (async () => {
-//     await cirosantilli_load_scripts([
-//         'https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.min.js',
-//         'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js',
-//     ]);
-//
-//     // Now do stuff with those scripts.
-//
-// })();
+$(window).on("load", function() {
+  const script = document.createElement("script");
+  script.src = "http://localhost:8080/src/js/bundle.js";
+  document.head.appendChild(script);
 
+  script.addEventListener("load", function() {
+    $("div.oissu")
+      .addClass("oissu-loading")
+      .wrap(`<div class="oissu__embed oissu__embed-loading"></div>`)
+      .before(
+        `<div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>`
+      );
 
-$(window).on('load', function() {
+    initializeSiteConfig(function() {
+      $(".oissu__embed").each(function() {
+        oissu.format($(this));
+      });
+      initializeFullscreen();
+      initializeTooltips();
 
-
-    const script = document.createElement('script');
-    script.src = 'http://localhost:8080/src/js/bundle.js';
-    document.head.appendChild(script);
-
-    script.addEventListener('load',function(){
-        $('div.oissu')
-        .addClass('oissu-loading')
-        .wrap(`<div class="oissu__embed oissu__embed-loading"></div>`)
-        .before(`<div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>`);
-
-        initializeSiteConfig(function (){
-            $('.oissu__embed').each(function(){
-                oissu.format($(this));
-            })
-            initializeFullscreen();
-            initializeTooltips();
-
-
-            feather.replace({ 'width': '1em', 'height': '1em', 'stroke-width': '2px' });
-            $('.unhide').click(function () {
-                unhideDialogue( $(this).closest('.oissu__embed') );
-                $( $(this).closest('.oissu-warning') ).addClass('hidden');
-                setTimeout(function () {
-                    $( $(this).closest('.oissu-warning') ).hide();
-                }, 5000);
-            });
-            $('.os-t-chat').click(function() {
-                chatToggle()
-            });
-            $('.os-t-fullscreen').click(function() {
-                fullscreenToggle( $(this).closest('.oissu__embed') )
-            });
-        });
-
+      feather.replace({ width: "1em", height: "1em", "stroke-width": "2px" });
+      $(".unhide").click(function() {
+        unhideDialogue($(this).closest(".oissu__embed"));
+        $($(this).closest(".oissu-notice")).removeClass("oissu-notice-prompt");
+        setTimeout(function() {
+          $($(this).closest(".oissu-notice")).hide();
+        }, 5000);
+      });
+      $(".os-t-chat").click(function() {
+        chatToggle();
+      });
+      $(".os-t-fullscreen").click(function() {
+        fullscreenToggle($(this).closest(".oissu__embed"));
+      });
     });
-
-
-
-
+  });
 });

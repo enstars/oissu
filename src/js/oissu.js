@@ -13,29 +13,6 @@ const logo = `<svg class="oissu-logo" width="1093" height="421" viewBox="0 0 109
 const spinner = `<div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>`;
 
 (function(oissu, $, undefined) {
-    /*
-    //Private Property
-    var isHot = true;
-
-    //Public Property
-    oissu.ingredient = "Bacon Strips";
-
-    //Public Method
-    oissu.fry = function() {
-        var oliveOil;
-
-        addItem( "\t\n Butter \n\t" );
-        addItem( oliveOil );
-        console.log( "Frying " + skillet.ingredient );
-    };
-
-    //Private Method
-    function addItem( item ) {
-        if ( item !== undefined ) {
-            console.log( "Adding " + $.trim(item) );
-        }
-    }*/
-
     oissu.config = {
         bubble: false,
         image: false,
@@ -614,7 +591,8 @@ const spinner = `<div class="spinner"><div class="bounce1"></div><div class="bou
 
 window.addEventListener("load", function() {
     const script = document.createElement("script");
-    script.src = "http://localhost:8080/src/js/bundle.js";
+    script.src =
+        "https://cdn.jsdelivr.net/gh/enstars/oissu@main/src/js/bundle.js";
     document.body.appendChild(script);
 
     script.addEventListener("load", function() {

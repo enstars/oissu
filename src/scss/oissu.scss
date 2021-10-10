@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&display=swap");
 @import url("npm.css");
+
 :root {
     --os-bubble-color: #fbfbfe;
     --os-bubble-background-color: var(--os-background);
@@ -20,10 +21,12 @@
     --os-border-color: #c5ccd2;
     --os-border: solid 1px var(--os-border-color);
     --os-toolbar-color: #4b545e;
+
     --os-shadow-1: 0 1px 3px 0 rgba(0, 0, 0, 0.1),
         0 1px 2px 0 rgba(0, 0, 0, 0.06);
     --os-shadow-2: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
         0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
     --os-shadow-f-1: drop-shadow(0 1px 1.5px rgba(0, 0, 0, 0.05))
         drop-shadow(0 1px 1px rgba(0, 0, 0, 0.06));
 }
@@ -77,7 +80,7 @@ body.night {
 
 .os-unit {
     display: grid;
-    grid-template: auto/var(--os-identifier-width) 1fr;
+    grid-template: auto / var(--os-identifier-width) 1fr;
     column-gap: 10px;
     row-gap: 2.5px;
 }
@@ -93,7 +96,8 @@ body.night {
 
 .os-content.os-lines p {
     margin: 0px 0px 0.3em 0px;
-    border-radius: var(--os-bubble-radius-small) var(--os-bubble-radius-large) var(--os-bubble-radius-large) var(--os-bubble-radius-small);
+    border-radius: var(--os-bubble-radius-small) var(--os-bubble-radius-large)
+        var(--os-bubble-radius-large) var(--os-bubble-radius-small);
     align-self: flex-start;
     position: relative;
     background: var(--os-text-background);
@@ -101,7 +105,8 @@ body.night {
 
 .os-content.os-lines p:last-child {
     margin: 0px;
-    border-radius: var(--os-bubble-radius-small) var(--os-bubble-radius-large) var(--os-bubble-radius-large) var(--os-bubble-radius-large);
+    border-radius: var(--os-bubble-radius-small) var(--os-bubble-radius-large)
+        var(--os-bubble-radius-large) var(--os-bubble-radius-large);
 }
 
 .os-content.os-lines p:first-child {
@@ -200,7 +205,7 @@ img.os-identifier {
 
 .os-content.os-rich.os-block .os-narration {
     display: grid;
-    grid-template: auto/calc(var(--os-identifier-width)) 1fr;
+    grid-template: auto / calc(var(--os-identifier-width)) 1fr;
     column-gap: 10px;
     row-gap: 5px;
     margin: 0 0 0.5em;
@@ -292,8 +297,10 @@ img.os-identifier {
     gap: 5px;
     padding: 5px;
     user-select: none;
+
     height: 37px;
     box-sizing: border-box;
+
     background: var(--os-background-secondary);
     color: var(--os-toolbar-color);
 }
@@ -328,6 +335,7 @@ img.os-identifier {
     padding: 5px;
     height: 25px;
     box-sizing: border-box;
+
     text-decoration: none;
     border: var(--os-border);
     background: var(--os-background-secondary);
@@ -387,6 +395,7 @@ img.os-identifier {
     display: flex;
     align-items: center;
     justify-content: center;
+
     height: 25px;
     box-sizing: border-box;
 }
@@ -412,11 +421,13 @@ svg.oissu-logo .oissu-logo__letter {
     background: var(--os-background);
     border: var(--os-border);
     color: var(--os-text-color);
+
     /* margin: 10px 10px; */
     padding: 15px 15px;
     border-radius: 5px;
     font: 1em "Karla", sans-serif;
     letter-spacing: 0px;
+
     box-sizing: border-box;
     filter: var(--os-shadow-f-1);
 }
@@ -452,7 +463,7 @@ svg.oissu-logo .oissu-logo__letter {
 .oissu-notice .oissu-notice__confirm button {
     color: white;
     background: none;
-    border: solid 1px rgba(255, 255, 255, 0.3);
+    border: solid 1px hsla(0, 0%, 100%, 0.3);
     font: inherit;
     font-size: 0.8em;
     font-weight: 700;
@@ -462,7 +473,7 @@ svg.oissu-logo .oissu-logo__letter {
 }
 
 .oissu-notice .oissu-notice__confirm button:hover {
-    background: white;
+    background: hsla(0, 0%, 100%, 1);
     color: #cb0f0f;
 }
 
@@ -473,15 +484,20 @@ svg.oissu-logo .oissu-logo__letter {
     top: 0;
     left: 0;
     z-index: 11;
+
     /* background: var(--os-background); */
+
     display: grid;
     grid-template-rows: 1fr auto;
     justify-items: center;
     align-items: center;
+
     padding: 10px;
     box-sizing: border-box;
+
     opacity: 0;
     transform: scale(0.9);
+
     transition: all 0.2s ease;
 }
 
@@ -492,8 +508,11 @@ svg.oissu-logo .oissu-logo__letter {
     top: 0;
     left: 0;
     z-index: 10;
+
     background: var(--os-background);
+
     opacity: 0;
+
     transition: all 0.2s ease;
 }
 
@@ -515,6 +534,7 @@ svg.oissu-logo .oissu-logo__letter {
 }
 
 /*----------------------------------------------------------------------------*/
+
 q.dialogue-start,
 q.dialogue-end {
     display: none;

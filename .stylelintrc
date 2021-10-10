@@ -1,4 +1,8 @@
 {
+    plugins: [
+        'stylelint-scss',
+        'stylelint-order',
+    ],
     "rules": {
         "indentation": 4,
         "number-leading-zero": "always",
@@ -14,7 +18,16 @@
         "declaration-property-value-blacklist": { "/^border/": ["none"] },
         "at-rule-empty-line-before": [
             "always",
-            { ignore: ["after-comment"], except: ["first-nested"] }
+            { ignore: ["after-comment"], except: ["after-same-name", "first-nested"] }
+        ],
+        'max-nesting-depth': 2,
+        'scss/dollar-variable-pattern': '^_?[a-z]+[\\w-]*$',
+        'scss/at-extend-no-missing-placeholder': true,
+        'order/order': [
+          'declarations',
+          { type: 'at-rule' },
+          { type: 'at-rule', hasBlock: true },
+          'rules',
         ],
 
     }

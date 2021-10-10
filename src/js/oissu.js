@@ -124,12 +124,19 @@ const spinner = `<div class="spinner"><div class="bounce1"></div><div class="bou
             if ($(this).hasClass("oissu-notice")) {
                 return;
             }
+            console.log(
+                $(this)
+                    .html()
+                    .trim()
+            );
             var newUnit =
                     $(this)
                         .html()
+                        .trim()
                         .startsWith("<b") ||
                     $(this)
                         .html()
+                        .trim()
                         .startsWith("<strong") ||
                     $(this).hasClass("end"),
                 rich =

@@ -1,0 +1,112 @@
+.os-toolbar {
+    display: flex;
+    justify-content: flex-end;
+    gap: 5px;
+    padding: 5px;
+    user-select: none;
+
+    height: 37px;
+    box-sizing: border-box;
+
+    background: var(--os-background-secondary);
+    color: var(--os-toolbar-color);
+}
+
+.os-toolbar.top {
+    border-bottom: var(--os-border);
+}
+
+.os-toolbar.bottom {
+    border-top: var(--os-border);
+}
+
+.os-toolbar .feather {
+    font-size: 0.9em;
+    vertical-align: -2px;
+}
+
+.os-toolbar .os-toolbar__section {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
+.os-toolbar .os-toolbar__section a {
+    border-radius: 5px;
+    color: currentColor;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font: 700 16px "Karla", sans-serif;
+    letter-spacing: 0px;
+    padding: 5px;
+    height: 25px;
+    box-sizing: border-box;
+
+    text-decoration: none;
+    border: var(--os-border);
+    background: var(--os-background-secondary);
+}
+
+.os-toolbar .os-toolbar__section a:hover {
+    background: var(--os-background-secondary__hover);
+}
+
+.os-toolbar .os-toolbar__section.tools {
+    grid-column: 3/4;
+}
+
+.os-toolbar .os-toolbar__section.tools a {
+    width: 25px;
+}
+
+.os-toolbar .os-toolbar__section.nav {
+    grid-column: 4/5;
+}
+
+.os-toolbar .os-toolbar__section.nav {
+    gap: 0px;
+}
+
+.os-toolbar .os-toolbar__section.nav a {
+    padding: 5px 7.5px;
+    border-radius: 0px;
+    border-width: 1px;
+}
+
+.os-toolbar .os-toolbar__section.nav a:first-child {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.os-toolbar .os-toolbar__section.nav a:last-child {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.os-toolbar .os-toolbar__section.nav a:not(:last-child) {
+    border-right: 0;
+}
+
+.oissu__embed .os-credits {
+    background: var(--os-border-color);
+    border-top: var(--os-border);
+    grid-row: 2/3;
+    grid-column: 1/5;
+    color: var(--os-text-color);
+    font: var(--os-font);
+    font-weight: 700;
+    letter-spacing: 0px;
+    font-size: 0.7em;
+    padding: 5px 0px 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 25px;
+    box-sizing: border-box;
+}
+
+.oissu__embed .os-credits a {
+    color: inherit;
+}

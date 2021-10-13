@@ -13,6 +13,8 @@ const logo = `<svg class="oissu-logo" width="1093" height="421" viewBox="0 0 109
 const spinner = `<div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>`;
 
 (function(oissu, $, undefined) {
+    oissu.debug = new URLSearchParams(window.location.search).get("debug");
+
     oissu.config = {
         bubble: false,
         image: false,
@@ -203,7 +205,7 @@ const spinner = `<div class="spinner"><div class="bounce1"></div><div class="bou
                     cache = $(`<div></div>`).addClass(`os-content os-rich`);
                     $(cache).append($(this).html());
                     if (block) {
-                        $(cache).addClass("os-block");
+                        $(cache).addClass("os-blockquote");
                         $(cache)
                             .children()
                             .each(function() {
@@ -231,6 +233,7 @@ const spinner = `<div class="spinner"><div class="bounce1"></div><div class="bou
                                 ) {
                                     $(this)
                                         .addClass("os-season")
+                                        .addClass("os-block")
                                         .prepend(
                                             `<i data-feather="thermometer"></i>`
                                         );
@@ -242,9 +245,12 @@ const spinner = `<div class="spinner"><div class="bounce1"></div><div class="bou
                                 ) {
                                     $(this)
                                         .addClass("os-time")
+                                        .addClass("os-block")
                                         .prepend(
                                             `<i data-feather="clock"></i>`
                                         );
+                                } else if ($(this).hasClass("os-block")) {
+                                    $(this).addClass("os-block");
                                 } else {
                                     $(this)
                                         .wrap("<div></div>")
@@ -268,6 +274,49 @@ const spinner = `<div class="spinner"><div class="bounce1"></div><div class="bou
         if (!$(oissuEmbed).hasClass("oissu-notice-prompt-visible")) {
             oissu.start(oissuEmbed);
         }
+    };
+
+    oissu.mao = function() {
+        console.log(
+            `%c If you're seeing this, your browser probably doesn't support this GIF so go here instead! https://static.wikia.nocookie.net/ensemble-stars/images/6/65/(Mundane_Specialty)_Mao_Isara_Chibi.gif`,
+            `display: block;padding: 0px 0px 251px 197px;margin: 10px;border-radius: 5px;font-size: 0;background:center/100% no-repeat url("https://static.wikia.nocookie.net/ensemble-stars/images/6/65/(Mundane_Specialty)_Mao_Isara_Chibi.gif");/*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*/`
+        );
+    };
+
+    oissu.initialize = function() {
+        $("div.oissu")
+            .addClass("oissu-loading")
+            .wrap(`<div class="oissu__embed oissu__embed-loading"></div>`)
+            .before(spinner);
+
+        initConfig();
+        initFullscreen();
+
+        $(".oissu__embed").each(function(i) {
+            $(this).data("oissu-instance", i);
+            oissu.format($(this));
+        });
+
+        feather.replace({
+            width: "1em",
+            height: "1em",
+            "stroke-width": "2px"
+        });
+        $(".unhide").click(function() {
+            oissu.start($(this).closest(".oissu__embed"));
+            $($(this).closest(".oissu-notice")).removeClass(
+                "oissu-notice-prompt"
+            );
+            setTimeout(function() {
+                $($(this).closest(".oissu-notice")).hide();
+            }, 5000);
+        });
+        $(".os-t-chat").click(function() {
+            oissu.chatToggle();
+        });
+        $(".os-t-fullscreen").click(function() {
+            oissu.fullscreenToggle($(this).closest(".oissu__embed"));
+        });
     };
 
     function initNotes(oissuEmbed) {
@@ -541,8 +590,8 @@ const spinner = `<div class="spinner"><div class="bounce1"></div><div class="bou
     }
 
     function initFullscreen() {
-        $("body").prepend(`
-            <div class="oissu__background fullscreen">
+        $("body").append(`
+            <div class="oissu__background fullscreen" style="display: none;">
             <div class="oissu__wrapper fullscreen">
             <div class="oissu fullscreen">
             <div class="oissu__embed fullscreen">
@@ -558,51 +607,20 @@ const spinner = `<div class="spinner"><div class="bounce1"></div><div class="bou
                 return false;
             });
     }
-
-    oissu.initialize = function() {
-        $("div.oissu")
-            .addClass("oissu-loading")
-            .wrap(`<div class="oissu__embed oissu__embed-loading"></div>`)
-            .before(spinner);
-
-        initConfig();
-        initFullscreen();
-
-        $(".oissu__embed").each(function(i) {
-            $(this).data("oissu-instance", i);
-            oissu.format($(this));
-        });
-
-        feather.replace({
-            width: "1em",
-            height: "1em",
-            "stroke-width": "2px"
-        });
-        $(".unhide").click(function() {
-            oissu.start($(this).closest(".oissu__embed"));
-            $($(this).closest(".oissu-notice")).removeClass(
-                "oissu-notice-prompt"
-            );
-            setTimeout(function() {
-                $($(this).closest(".oissu-notice")).hide();
-            }, 5000);
-        });
-        $(".os-t-chat").click(function() {
-            oissu.chatToggle();
-        });
-        $(".os-t-fullscreen").click(function() {
-            oissu.fullscreenToggle($(this).closest(".oissu__embed"));
-        });
-    };
 })((window.oissu = window.oissu || {}), jQuery);
 
 window.addEventListener("load", function() {
+    // document.querySelector("head").innerHTML +=
+    // '<link rel="stylesheet" href="https://r.tsukina.ga/c/oissu.css" type="text/css"/>';
     const script = document.createElement("script");
     script.src =
         "https://cdn.jsdelivr.net/gh/enstars/oissu@main/src/js/bundle.js";
     document.body.appendChild(script);
 
     script.addEventListener("load", function() {
-        oissu.initialize();
+        oissu.mao();
+        if ($("div.oissu").length) {
+            oissu.initialize();
+        }
     });
 });

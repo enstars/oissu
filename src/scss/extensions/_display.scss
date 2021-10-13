@@ -1,0 +1,41 @@
+body.oissu-bubble .oissu__embed {
+    background: var(--os-bubble-background-color);
+}
+
+body.oissu-bubble .os-content.os-lines p {
+    background: var(--os-bubble-color);
+    padding: var(--os-bubble-padding);
+    filter: var(--os-shadow-f-1);
+}
+
+body.oissu-bubble .os-content.os-lines p:first-child::before {
+    content: "";
+    display: block;
+    background: var(--os-bubble-color);
+    width: 6px;
+    height: 12px;
+    position: absolute;
+    top: 0px;
+    left: -6px;
+    mask: url("http://localhost:8080/src/svg/arrow.svg") no-repeat 100% 100%;
+}
+
+body.oissu-bubble span.os-identifier {
+    padding: 10px 0px;
+}
+
+body.oissu-image {
+    --os-identifier-width: var(--os-identifier-width-display);
+}
+
+body.oissu-image span.os-identifier {
+    text-align: left;
+    font-size: 0.8em;
+    padding: 0px;
+    line-height: 1;
+}
+
+body.oissu-image img.os-identifier {
+    display: block;
+    filter: var(--os-shadow-f-1);
+}

@@ -1,3 +1,16 @@
 .os-note li {
     list-style-type: decimal;
 }
+
+.os-note-inline {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 5px;
+    line-height: 0;
+    font: 800 0.5em "Karla", sans-serif;
+    background: var(--os-background-secondary);
+    border-radius: 0.25em;
+    border: var(--os-border);
+    padding: 0.1em 0.5em;
+    color: inherit;
+}

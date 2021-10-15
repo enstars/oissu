@@ -317,6 +317,13 @@ const spinner = `<div class="spinner"><div class="bounce1"></div><div class="bou
         $(".os-t-fullscreen").click(function() {
             oissu.fullscreenToggle($(this).closest(".oissu__embed"));
         });
+
+        console.log(
+            $("script[oissu]")
+                .html()
+                .substring(1)
+                .slice(0, -1)
+        );
     };
 
     function initNotes(oissuEmbed) {

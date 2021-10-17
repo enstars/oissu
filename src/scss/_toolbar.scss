@@ -9,8 +9,8 @@
         height: 37px;
         box-sizing: border-box;
 
-        background: var(--os-background-secondary);
-        color: var(--os-toolbar-color);
+        background: var(--os-toolbar-color);
+        color: var(--os-toolbar-icon-color);
     }
 
     .os-toolbar.top {
@@ -22,7 +22,6 @@
     }
 
     .os-toolbar .feather {
-        font-size: 0.9em;
         vertical-align: -2px;
     }
 
@@ -38,7 +37,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        font: 700 16px "Karla", sans-serif;
+        font: var(--os-text-font);
         letter-spacing: 0px;
         padding: 5px;
         height: 25px;
@@ -46,11 +45,11 @@
 
         text-decoration: none;
         border: var(--os-border);
-        background: var(--os-background-secondary);
+        background: var(--os-background-secondary-color);
     }
 
     .os-toolbar .os-toolbar__section a:hover {
-        background: var(--os-background-secondary__hover);
+        background: var(--os-background-secondary-color__hover);
     }
 
     .os-toolbar .os-toolbar__section.tools {
@@ -95,7 +94,7 @@
         grid-row: 2/3;
         grid-column: 1/5;
         color: var(--os-text-color);
-        font: var(--os-font);
+        font: var(--os-text-font);
         font-weight: 700;
         letter-spacing: 0px;
         font-size: 0.7em;

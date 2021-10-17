@@ -6,7 +6,7 @@ body.oissu-bubble .oissu__embed {
             &.os-lines p {
                 background: var(--os-bubble-color);
                 padding: var(--os-bubble-padding);
-                filter: var(--os-shadow-f-1);
+                filter: var(--os-shadow);
             }
 
             &.os-lines p:first-child::before {
@@ -43,6 +43,6 @@ body.oissu-image .oissu__embed .oissu .os-unit {
 
     img.os-identifier {
         display: block;
-        filter: var(--os-shadow-f-1);
+        filter: var(--os-shadow);
     }
 }

@@ -12,12 +12,12 @@
 }
 
 .oissu__wrapper.fullscreen .oissu__embed {
-    margin: 0px;
+    margin: 0px auto;
 }
 
 .oissu__wrapper.fullscreen {
     margin: auto;
-    max-width: 600px;
+    max-width: 100vw;
     box-sizing: border-box;
 }
 
@@ -32,6 +32,8 @@
 
 .oissu.fullscreen {
     margin: 0 auto;
+    min-width: 300px;
+    max-width: calc(100vw - 20px);
 }
 
 body.oissu-expanded {

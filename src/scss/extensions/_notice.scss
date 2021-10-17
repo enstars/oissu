@@ -1,111 +1,115 @@
-.oissu-notice {
-    background: var(--os-background);
-    border: var(--os-border);
-    color: var(--os-text-color);
+.oissu__embed {
+    .oissu-notice {
+        background: var(--os-background-color);
+        border: var(--os-border);
+        color: var(--os-text-color);
 
-    /* margin: 10px 10px; */
-    padding: 15px 15px;
-    border-radius: 5px;
-    font: 1em "Karla", sans-serif;
-    letter-spacing: 0px;
+        /* margin: 10px 10px; */
+        padding: 15px 15px;
+        border-radius: 5px;
+        font: var(--os-text-font);
+        letter-spacing: 0px;
 
-    box-sizing: border-box;
-    filter: var(--os-shadow-f-1);
-}
+        box-sizing: border-box;
+        filter: var(--os-shadow);
 
-.oissu-notice.os-notice__cw {
-    background: #cb0f0f;
-    border: solid 1px #9f0606;
-    color: white;
-}
+        &.os-notice__cw {
+            background: #cb0f0f;
+            border: solid 1px #9f0606;
+            color: white;
+        }
 
-.oissu__embed .oissu-notice h2 {
-    font-weight: 700;
-    margin: 0 0 2px;
-    color: inherit;
-    font-size: 1.1em;
-}
+        h2 {
+            font-weight: 700;
+            margin: 0 0 2px;
+            color: inherit;
+            font-size: 1.1em;
 
-.oissu__embed .oissu-notice h2 .feather {
-    font-size: 0.9em;
-    vertical-align: -0.1em;
-    stroke: currentColor;
-    margin-left: 0.2em;
-}
+            .feather {
+                font-size: 0.9em;
+                vertical-align: -0.1em;
+                stroke: currentColor;
+                margin-left: 0.2em;
+            }
+        }
 
-.oissu__embed .oissu-notice p {
-    font-size: 0.9em;
-}
+        p {
+            font-size: 0.9em;
+        }
 
-.oissu-notice .oissu-notice__confirm {
-    text-align: right;
-}
+        .oissu-notice__confirm {
+            text-align: right;
 
-.oissu-notice .oissu-notice__confirm button {
-    color: white;
-    background: none;
-    border: solid 1px hsla(0, 0%, 100%, 0.3);
-    font: inherit;
-    font-size: 0.8em;
-    font-weight: 700;
-    padding: 5px 10px;
-    border-radius: 5px;
-    box-shadow: var(--os-shadow-1);
-}
+            button {
+                color: white;
+                background: none;
+                border: solid 1px hsla(0, 0%, 100%, 0.3);
+                font: inherit;
+                font-size: 0.8em;
+                font-weight: 700;
+                padding: 5px 10px;
+                border-radius: 5px;
+                filter: var(--os-shadow);
 
-.oissu-notice .oissu-notice__confirm button:hover {
-    background: hsla(0, 0%, 100%, 1);
-    color: #cb0f0f;
-}
+                &:hover {
+                    background: hsla(0, 0%, 100%, 1);
+                    color: #cb0f0f;
+                }
+            }
+        }
+    }
 
-.oissu-prompt {
-    position: absolute;
-    width: 100%;
-    height: 370px;
-    top: 0;
-    left: 0;
-    z-index: 11;
+    .oissu-prompt {
+        position: absolute;
+        width: 100%;
+        height: 370px;
+        top: 0;
+        left: 0;
+        z-index: 11;
 
-    /* background: var(--os-background); */
+        /* background: var(--os-background-color); */
 
-    display: grid;
-    grid-template-rows: 1fr auto;
-    justify-items: center;
-    align-items: center;
+        display: grid;
+        grid-template-rows: 1fr auto;
+        justify-items: center;
+        align-items: center;
 
-    padding: 10px;
-    box-sizing: border-box;
+        padding: 10px;
+        box-sizing: border-box;
 
-    opacity: 0;
-    transform: scale(0.9);
+        opacity: 0;
+        transform: scale(0.9);
 
-    transition: all 0.2s ease;
-}
+        transition: all 0.2s ease;
 
-.oissu-prompt__greyout {
-    position: absolute;
-    width: 100%;
-    height: 370px;
-    top: 0;
-    left: 0;
-    z-index: 10;
+        .oissu-notice {
+            max-width: 300px;
+        }
+    }
 
-    background: var(--os-background);
+    .oissu-prompt__greyout {
+        position: absolute;
+        width: 100%;
+        height: 370px;
+        top: 0;
+        left: 0;
+        z-index: 10;
 
-    opacity: 0;
+        background: var(--os-background-color);
 
-    transition: all 0.2s ease;
-}
+        opacity: 0;
 
-.oissu-notice-prompt-visible .oissu-prompt {
-    opacity: 1;
-    transform: scale(1);
-}
+        transition: all 0.2s ease;
+    }
 
-.oissu-notice-prompt-visible .oissu-prompt__greyout {
-    opacity: 1;
-}
+    &.oissu-notice-prompt-visible {
+        .oissu-prompt {
+            opacity: 1;
+            transform: scale(1);
+        }
 
-.oissu-prompt .oissu-notice {
-    max-width: 300px;
+        .oissu-prompt__greyout {
+            opacity: 1;
+        }
+    }
 }

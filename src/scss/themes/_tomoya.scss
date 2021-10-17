@@ -1,29 +1,32 @@
 :root {
+    // core
+    --os-text-font: normal normal normal 14px/1.3 "Karla";
+    --os-text-color: #4b545e;
+    --os-link-color: #294769;
+    --os-link-color__hover: #23558e;
+    --os-background-color: #eef0f3;
+    --os-background-color__hover: #e5e9ee;
+    --os-background-secondary-color: #dbdfe7;
+    --os-background-secondary-color__hover: #ced3dd;
+    --os-animation-duration: 0.2s;
+    --os-border-color: #c5ccd2;
+    --os-border: solid 1px var(--os-border-color);
+    --os-shadow: drop-shadow(0 1px 1.5px rgba(0, 0, 0, 0.05))
+        drop-shadow(0 1px 1px rgba(0, 0, 0, 0.06));
+
+    // toolbar
+    --os-toolbar-color: var(--os-background-secondary-color);
+    --os-toolbar-icon-color: #4b545e;
+
+    // extensions
+    // display
     --os-bubble-color: #fbfbfe;
-    --os-bubble-background-color: var(--os-background);
+    --os-bubble-background-color: var(--os-background-color);
     --os-bubble-radius-large: 0.5em;
     --os-bubble-radius-small: 0.1em;
     --os-bubble-padding: 0.6em 0.85em;
-    --os-text-color: #4b545e;
-    --os-font: normal normal normal 14px/1.3 "Karla";
     --os-identifier-color: #5e6978;
     --os-identifier-width: 70px;
     --os-identifier-width-display: 30px;
     --os-identifier-radius: 10px;
-    --os-animation-duration: 0.2s;
-    --os-background: #eef0f3;
-    --os-text-background: var(--os-background);
-    --os-background-secondary: #dbdfe7;
-    --os-background-secondary__hover: #ced3dd;
-    --os-border-color: #c5ccd2;
-    --os-border: solid 1px var(--os-border-color);
-    --os-toolbar-color: #4b545e;
-
-    --os-shadow-1: 0 1px 3px 0 rgba(0, 0, 0, 0.1),
-        0 1px 2px 0 rgba(0, 0, 0, 0.06);
-    --os-shadow-2: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-        0 2px 4px -1px rgba(0, 0, 0, 0.06);
-
-    --os-shadow-f-1: drop-shadow(0 1px 1.5px rgba(0, 0, 0, 0.05))
-        drop-shadow(0 1px 1px rgba(0, 0, 0, 0.06));
 }

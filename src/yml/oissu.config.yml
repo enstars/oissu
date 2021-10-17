@@ -1,0 +1,24 @@
+no-selection: true
+chat-format: true
+fullscreen: true
+navigation: true
+styles:
+    text-font: 14px "Karla"
+    text-color: "#4b545e"
+    link-color: "#294769"
+    link-color__hover: "#23558e"
+    background-color: "#eef0f3"
+    background-color__hover: "#e5e9ee"
+    background-secondary-color: "#dbdfe7"
+    background-secondary-color__hover: "#ced3dd"
+    animation-duration: 0.2s
+    border-color: "#c5ccd2"
+    toolbar-icon-color: "#4b545e"
+    bubble-color: "#fbfbfe"
+    identifier-color: "#5e6978"
+defaults:
+    display: initials
+    display-custom: initials
+    prev: https://example.com/prev Prev
+    next: https://example.com/next Next
+    directory: https://example.com/dir Directory

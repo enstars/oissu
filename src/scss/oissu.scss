@@ -1,9 +1,15 @@
-@use "themes/tomoya";
-@use "packages";
-@use "core";
-@use "toolbar";
+// Oissu core
+
+@use "themes/tomoya"; // default theme
+@use "packages"; //      external package settings
+@use "core"; //          core styling
+@use "toolbar"; //       toolbar styling
+
+// Extensions
+
 @use "extensions/display";
 @use "extensions/rich";
 @use "extensions/fullscreen";
 @use "extensions/notice";
 @use "extensions/footnotes";
+@use "extensions/font";

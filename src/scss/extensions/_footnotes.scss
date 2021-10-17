@@ -5,12 +5,18 @@
 .os-note-inline {
     display: inline-block;
     vertical-align: middle;
-    margin: 0 5px;
+    margin: 0 0.1em;
     line-height: 0;
-    font: 800 0.5em "Karla", sans-serif;
-    background: var(--os-background-secondary);
+    font: var(--os-text-font);
+    font-weight: 700;
+    font-size: 0.7em;
     border-radius: 0.25em;
     border: var(--os-border);
-    padding: 0.1em 0.5em;
+    padding: 0em 0.3em;
     color: inherit;
+    vertical-align: 0.2em;
+
+    &:hover {
+        color: inherit;
+    }
 }

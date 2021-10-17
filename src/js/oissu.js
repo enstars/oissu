@@ -148,15 +148,17 @@ const interact = require("interactjs");
             "next",
             "directory"
         ];
-        for (const setting of oissuStorySettings) {
-            if (
-                typeof oissu.config.defaults[setting] !== "undefined" &&
-                !$(oissuDialogue).attr(`data-oissu-${setting}`)
-            ) {
-                $(oissuDialogue).attr(
-                    `data-oissu-${setting}`,
-                    oissu.config.defaults[setting]
-                );
+        if (typeof oissu.config.defaults !== "undefined") {
+            for (const setting of oissuStorySettings) {
+                if (
+                    typeof oissu.config.defaults[setting] !== "undefined" &&
+                    !$(oissuDialogue).attr(`data-oissu-${setting}`)
+                ) {
+                    $(oissuDialogue).attr(
+                        `data-oissu-${setting}`,
+                        oissu.config.defaults[setting]
+                    );
+                }
             }
         }
         let cache = $(`<div class="os-exclude"></div>`);
@@ -356,7 +358,7 @@ const interact = require("interactjs");
                     ? true
                     : oissu.config["no-selection"]
             ) {
-                console.log("no-s");
+                // console.log("no-s");
                 $(this).css("user-select", "none");
             }
             $(this).data("oissu-instance", i);
@@ -693,24 +695,29 @@ const interact = require("interactjs");
     }
 
     function initConfig() {
-        oissu.config = yaml.load(
-            $("script[oissu]")
-                .html()
-                .substring(1)
-                .slice(0, -1)
-        );
-        if (Object.keys(oissu.config.styles).length) {
-            let customStyle = "";
-            for (const style in oissu.config.styles) {
-                customStyle =
-                    customStyle +
-                    `--os-${style}: ${oissu.config.styles[style]};`;
+        if ($("script[oissu]").length > 0) {
+            oissu.config = yaml.load(
+                $("script[oissu]")
+                    .html()
+                    .substring(1)
+                    .slice(0, -1)
+            );
+            // console.log(oissu.config);
+        }
+        if (typeof oissu.config.styles !== "undefined") {
+            if (Object.keys(oissu.config.styles).length) {
+                let customStyle = "";
+                for (const style in oissu.config.styles) {
+                    customStyle =
+                        customStyle +
+                        `--os-${style}: ${oissu.config.styles[style]};`;
+                }
+                // console.log(customStyle);
+                $("head").prepend(`<style>body{${customStyle}}</style>`);
             }
-            console.log(customStyle);
-            $("head").prepend(`<style>body{${customStyle}}</style>`);
         }
 
-        console.log(oissu.config);
+        // console.log(oissu.config);
     }
 
     function updateConfig() {

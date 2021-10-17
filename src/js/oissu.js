@@ -194,10 +194,14 @@ const interact = require("interactjs");
                 let name = "";
                 if (
                     newIdentifier &&
-                    $(this)
+                    ($(this)
                         .children()
                         .first()
-                        .is("b") &&
+                        .is("b") ||
+                        $(this)
+                            .children()
+                            .first()
+                            .is("strong")) &&
                     $(this)
                         .children()
                         .first()

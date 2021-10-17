@@ -680,8 +680,8 @@ const interact = require("interactjs");
     }
 
     function initCookie() {
-        const osck = localStorage.getItem("osck");
-        if (osck == null) {
+        let osck = localStorage.getItem("osck");
+        if (osck === null) {
             osck = JSON.stringify(oissu.cookie);
             localStorage.setItem("osck", osck);
         }

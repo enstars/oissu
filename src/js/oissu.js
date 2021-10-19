@@ -135,6 +135,17 @@ const interact = require("interactjs");
     };
 
     oissu.format = function(oissuEmbed) {
+        $(oissuEmbed)
+            .find("p")
+            .each(function() {
+                if (
+                    $(this)
+                        .html()
+                        .replace(/\s|&nbsp;/g, "")
+                        .replace(/<br>|<br\s*?\/>/g, "").length == 0
+                )
+                    $(this).remove();
+            });
         // console.log(this);
         if ($(oissuEmbed).find("[data-notice-type]").length > 0) {
             initNotice(oissuEmbed);
@@ -673,7 +684,8 @@ const interact = require("interactjs");
                 let characterName = $(this)
                     .closest(".os-unit")
                     .first()
-                    .attr("character");
+                    .attr("character")
+                    .trim();
                 characterName = characterName.toLowerCase();
                 $(this).attr("src", oissu.instances[i].icons[characterName]);
             });

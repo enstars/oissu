@@ -23,7 +23,11 @@ const interact = require("interactjs");
 
     oissu.loader = `<div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>`;
 
-    oissu.debug = new URLSearchParams(window.location.search).get("debug");
+    const URLParams = new URLSearchParams(window.location.search);
+
+    oissu.debug = URLParams.get("debug");
+
+    oissu.disabled = URLParams.get("disableOissu");
 
     oissu.cookie = {
         bubble: false,
@@ -172,14 +176,17 @@ const interact = require("interactjs");
                 }
             }
         }
-        let cache = $(`<div class="os-exclude"></div>`);
+        let cache = $(`<div class="os-cache-exclude"></div>`);
         let dialogue = $(`<div></div>`);
         $(oissuDialogue).append(`<div class="end"></div>`);
         let chat = $(oissuDialogue).children();
         let prevUnit = $('<div class="os-unit"></div>');
         let prevName = "Oi~ssu";
         chat.each(function() {
-            if ($(this).hasClass("oissu-notice")) {
+            if (
+                $(this).hasClass("oissu-notice") ||
+                $(this).hasClass("os-exclude")
+            ) {
                 return;
             }
             // console.log($(this).contents());
@@ -233,7 +240,7 @@ const interact = require("interactjs");
                 if (!name) {
                     name = prevName;
                 }
-                if (!$(cache).hasClass("os-exclude")) {
+                if (!$(cache).hasClass("os-cache-exclude")) {
                     let unit = $("<div></div>").addClass("os-unit");
                     if ($(cache).is("[character]")) {
                         $(unit).attr("character", $(cache).attr("character"));
@@ -267,12 +274,12 @@ const interact = require("interactjs");
                         $(cache)
                             .children()
                             .each(function() {
-                                if (
-                                    $(this)
-                                        .text()
-                                        .toLowerCase()
-                                        .startsWith("location")
-                                ) {
+                                const blockquoteText = $(this)
+                                    .text()
+                                    .trim()
+                                    .toLowerCase()
+                                    .replace(/[\[\]']+/g, "");
+                                if (blockquoteText.startsWith("location")) {
                                     $(this)
                                         .prepend(
                                             `<i data-feather="map-pin"></i>`
@@ -284,10 +291,7 @@ const interact = require("interactjs");
                                             `<span class="os-hr left"></span><span class="os-hr right"></span>`
                                         );
                                 } else if (
-                                    $(this)
-                                        .text()
-                                        .toLowerCase()
-                                        .startsWith("season")
+                                    blockquoteText.startsWith("season")
                                 ) {
                                     $(this)
                                         .addClass("os-season")
@@ -295,12 +299,7 @@ const interact = require("interactjs");
                                         .prepend(
                                             `<i data-feather="thermometer"></i>`
                                         );
-                                } else if (
-                                    $(this)
-                                        .text()
-                                        .toLowerCase()
-                                        .startsWith("time")
-                                ) {
+                                } else if (blockquoteText.startsWith("time")) {
                                     $(this)
                                         .addClass("os-time")
                                         .addClass("os-block")
@@ -779,7 +778,7 @@ const interact = require("interactjs");
 
 $("document").ready(function() {
     oissu.mao();
-    if ($("div.oissu").length) {
+    if ($("div.oissu").length && !oissu.disabled) {
         oissu.initialize();
     }
 });

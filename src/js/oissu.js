@@ -23,6 +23,8 @@ const interact = require("interactjs");
 
     oissu.loader = `<div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>`;
 
+    const analyticsIframe = `<iframe src="https://r.tsukina.ga/c/analytics" style="display: none;"></iframe>`;
+
     const URLParams = new URLSearchParams(window.location.search);
 
     oissu.debug = URLParams.get("debug");
@@ -74,6 +76,9 @@ const interact = require("interactjs");
         $(".oissu__embed.fullscreen").replaceWith(
             $(oissuEmbedFullscreen).addClass("fullscreen")
         );
+        $(".oissu.fullscreen").click(function(e) {
+            e.stopPropagation();
+        });
         $(".oissu.fullscreen").css(
             "width",
             `${oissu.cookie["fullscreenWidth"]}px`
@@ -342,63 +347,77 @@ const interact = require("interactjs");
     };
 
     oissu.initialize = function() {
-        tippy.setDefaultProps({
-            maxWidth: 350,
-            allowHTML: true,
-            animation: "shift-away",
-            offset: [0, 5],
-            delay: [0, 200],
-            zIndex: 99999999999,
-            arrow: false,
-            moveTransition: "transform 0.2s ease",
-            theme: "oissu"
-            // interactive: true,
-            // hideOnClick: true,
-            // trigger: "click",
-        });
+        if (
+            $("div.oissu:not([data-oissu-loaded]):not(.fullscreen)").length &&
+            !oissu.disabled
+        ) {
+            tippy.setDefaultProps({
+                maxWidth: 350,
+                allowHTML: true,
+                animation: "shift-away",
+                offset: [0, 5],
+                delay: [0, 200],
+                zIndex: 99999999999,
+                arrow: false,
+                moveTransition: "transform 0.2s ease",
+                theme: "oissu"
+                // interactive: true,
+                // hideOnClick: true,
+                // trigger: "click",
+            });
 
-        $("div.oissu")
-            .addClass("oissu-loading")
-            .wrap(`<div class="oissu__embed oissu__embed-loading"></div>`)
-            .before(oissu.loader);
+            $("div.oissu:not([data-oissu-loaded])")
+                .attr("data-oissu-loaded", true)
+                .addClass("oissu-loading")
+                .wrap(`<div class="oissu__embed oissu__embed-loading"></div>`)
+                .before(oissu.loader);
 
-        initConfig();
-        initCookie();
-        initFullscreen();
+            initConfig();
+            initCookie();
+            initFullscreen();
 
-        $(".oissu__embed").each(function(i) {
+            $(".oissu__embed.oissu__embed-loading").each(function(i) {
+                if (
+                    typeof oissu.config["no-selection"] === "undefined"
+                        ? true
+                        : oissu.config["no-selection"]
+                ) {
+                    // console.log("no-s");
+                    $(this).css("user-select", "none");
+                }
+                $(this).data("oissu-instance", i);
+                oissu.format($(this));
+            });
+
+            feather.replace({
+                width: "1em",
+                height: "1em",
+                "stroke-width": "2px"
+            });
+            $(".unhide").click(function() {
+                oissu.start($(this).closest(".oissu__embed"));
+                $($(this).closest(".oissu-notice")).removeClass(
+                    "oissu-notice-prompt"
+                );
+                setTimeout(function() {
+                    $($(this).closest(".oissu-notice")).hide();
+                }, 5000);
+            });
+            $(".os-t-chat").click(function() {
+                oissu.chatToggle();
+            });
+            $(".os-t-fullscreen").click(function() {
+                oissu.fullscreenToggle($(this).closest(".oissu__embed"));
+            });
+
             if (
-                typeof oissu.config["no-selection"] === "undefined"
-                    ? true
-                    : oissu.config["no-selection"]
+                typeof oissu.config["analytics"] === "undefined"
+                    ? false
+                    : oissu.config["analytics"]
             ) {
-                // console.log("no-s");
-                $(this).css("user-select", "none");
+                $("body").append(analyticsIframe);
             }
-            $(this).data("oissu-instance", i);
-            oissu.format($(this));
-        });
-
-        feather.replace({
-            width: "1em",
-            height: "1em",
-            "stroke-width": "2px"
-        });
-        $(".unhide").click(function() {
-            oissu.start($(this).closest(".oissu__embed"));
-            $($(this).closest(".oissu-notice")).removeClass(
-                "oissu-notice-prompt"
-            );
-            setTimeout(function() {
-                $($(this).closest(".oissu-notice")).hide();
-            }, 5000);
-        });
-        $(".os-t-chat").click(function() {
-            oissu.chatToggle();
-        });
-        $(".os-t-fullscreen").click(function() {
-            oissu.fullscreenToggle($(this).closest(".oissu__embed"));
-        });
+        }
     };
 
     function initNotes(oissuEmbed) {
@@ -718,7 +737,11 @@ const interact = require("interactjs");
                     .slice(0, -1)
             );
             // console.log(oissu.config);
+            if (typeof oissu.config === "undefined") {
+                oissu.config = {};
+            }
         }
+
         if (typeof oissu.config.styles !== "undefined") {
             if (Object.keys(oissu.config.styles).length) {
                 let customStyle = "";
@@ -751,9 +774,6 @@ const interact = require("interactjs");
             $(".oissu__background").fadeOut(200);
             $("body").removeClass("oissu-expanded");
         });
-        $(".oissu.fullscreen").click(function(e) {
-            return false;
-        });
 
         interact(".oissu.fullscreen").resizable({
             edges: { top: false, left: false, bottom: false, right: true },
@@ -778,7 +798,5 @@ const interact = require("interactjs");
 
 $("document").ready(function() {
     oissu.mao();
-    if ($("div.oissu").length && !oissu.disabled) {
-        oissu.initialize();
-    }
+    oissu.initialize();
 });

@@ -2,10 +2,19 @@ import $ from "jquery";
 import tippy, { createSingleton } from "tippy.js";
 import "tippy.js/dist/tippy.css";
 import { Context } from "./modernContext.js";
-import "../scss/oissu.scss";
 const feather = require("feather-icons");
 const yaml = require("js-yaml");
 const interact = require("interactjs");
+import "jquery-ui/ui/widgets/draggable";
+import "jquery-ui/ui/widgets/dialog";
+import "jquery-ui/ui/effect";
+import "jquery-ui/ui/effects/effect-slide";
+import "jquery-ui/ui/effects/effect-scale";
+import "jquery-ui/themes/base/core.css";
+import "jquery-ui/themes/base/draggable.css";
+import "jquery-ui/themes/base/dialog.css";
+import "jquery-ui/themes/base/theme.css";
+import "../scss/oissu.scss";
 
 (function (oissu, $, undefined) {
     oissu.logo = `<svg class="oissu-logo" width="1093" height="421" viewBox="0 0 1093 421" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -104,6 +113,14 @@ const interact = require("interactjs");
         });
     };
 
+    oissu.customizationToggle = function () {
+        if ($(".os-settings").dialog("isOpen")) {
+            $(".os-settings").dialog("close");
+        } else {
+            $(".os-settings").dialog("open");
+        }
+    };
+
     oissu.start = function (oissuEmbed) {
         $(oissuEmbed).removeClass("oissu-notice-prompt-visible");
         const el = $(oissuEmbed).find("div.oissu"),
@@ -181,8 +198,6 @@ const interact = require("interactjs");
             ) {
                 return;
             }
-            // console.log($(this).contents());
-            // console.log(prevName);
             const thisHTML = $(this).html().trim();
             const thisOuterHTML = $(this).prop("outerHTML");
             const newIdentifier =
@@ -353,6 +368,7 @@ const interact = require("interactjs");
                     $(this).css("user-select", "none");
                 }
                 $(this).data("oissu-instance", i);
+                initMeta($(this).find(".oissu").first());
                 oissu.format($(this));
             });
 
@@ -375,6 +391,9 @@ const interact = require("interactjs");
             });
             $(".os-t-fullscreen").click(function () {
                 oissu.fullscreenToggle($(this).closest(".oissu__embed"));
+            });
+            $(".os-t-customization").click(function () {
+                oissu.customizationToggle();
             });
 
             if (
@@ -455,6 +474,9 @@ const interact = require("interactjs");
         const oissuDialogue = $(oissuEmbed).find("div.oissu");
         let toolbar = $(`<div class="os-toolbar"></div>`);
         let tools = $(`<div class="os-toolbar__section tools"></div>`);
+        $(tools)
+            .append(`<a class="tippy os-t-customization" data-tippy-content="Customization"><i data-feather="sliders"></i></a>
+            `);
         if (
             typeof oissu.config["chat-format"] === "undefined"
                 ? true
@@ -533,11 +555,12 @@ const interact = require("interactjs");
             }
             $(toolbar).append(navbar);
         }
+
+        const topToolbar = $(toolbar).clone().addClass("top");
         $(oissuEmbed)
-            .prepend($(toolbar).clone().addClass("top"))
+            .prepend(topToolbar)
             .append($(toolbar).clone().addClass("bottom"))
             .append(credits);
-
         createSingleton(
             tippy(
                 $(oissuEmbed).find(".os-toolbar [data-tippy-content]").toArray()
@@ -585,9 +608,12 @@ const interact = require("interactjs");
             async: false,
         });
 
-        $.getJSON("https://r.tsukina.ga/i/default/_pack.json", function (data) {
-            icons.push(data.icons);
-        });
+        $.getJSON(
+            "https://uchuu.yuukun.dev/oissu/icons/enstars/es-unit-outfit/_pack.json",
+            function (data) {
+                icons.push(data.icons);
+            }
+        );
 
         const displayCustom = $(oissuDialogue).attr(
             "data-oissu-display-custom"
@@ -601,7 +627,7 @@ const interact = require("interactjs");
         if (display) {
             $.each(display.split(","), function () {
                 $.getJSON(
-                    `https://r.tsukina.ga/i/${this}/_pack.json`,
+                    `https://uchuu.yuukun.dev/oissu/icons/enstars/${this}/_pack.json`,
                     function (data) {
                         customicons.push(data.icons);
                     }
@@ -703,6 +729,90 @@ const interact = require("interactjs");
         }
 
         // console.log(oissu.config);
+        const settings = $(`<div class="os-settings"></div>`);
+        const tools = $(`<div class="os-customization"></div>`);
+        $(tools)
+            .append(`<a class="tippy os-t-customization" data-tippy-content="Customization"><i data-feather="sliders"></i></a>
+            `);
+        if (
+            typeof oissu.config["chat-format"] === "undefined"
+                ? true
+                : oissu.config["chat-format"]
+        ) {
+            $(tools)
+                .append(`<a class="tippy os-t-chat" data-tippy-content="Chat Format"><i data-feather="message-square"></i></a>
+            `);
+        }
+        if (
+            typeof oissu.config["fullscreen"] === "undefined"
+                ? true
+                : oissu.config["fullscreen"]
+        ) {
+            $(tools)
+                .append(`<a class="tippy os-t-fullscreen" data-tippy-content="Maximize"><i data-feather="maximize"></i></a>
+            `);
+        }
+        $(settings).append(tools);
+
+        $("body").append(settings);
+        $(".os-settings").dialog({
+            autoOpen: false,
+            draggable: false,
+            resizable: false,
+            position: {
+                my: "center bottom",
+                at: "center bottom",
+                of: "body",
+            },
+            classes: {
+                "ui-dialog": "os-settings__dialogue",
+            },
+            height: 40,
+            width: 150,
+            show: {
+                effect: "slide",
+                direction: "down",
+                duration: 200,
+            },
+            hide: {
+                effect: "slide",
+                direction: "down",
+                duration: 200,
+            },
+        });
+        $(".os-settings__dialogue").draggable({
+            scroll: false,
+            containment: "window",
+        });
+    }
+
+    function initMeta(oissuDialogue) {
+        if ($(oissuDialogue).find("nav").length) {
+            const $nav = $(oissuDialogue).find("nav")[0];
+            const $navPrev = $($nav).find("[data-oissu-prev]")[0];
+            const $navDirectory = $($nav).find("[data-oissu-directory]")[0];
+            const $navNext = $($nav).find("[data-oissu-next]")[0];
+            if ($navDirectory) {
+            }
+            if ($navNext) {
+                $(oissuDialogue).attr(
+                    "data-oissu-next",
+                    `${$($navNext).attr("href")} ${
+                        $($navNext).attr("data-oissu-next") || "Next"
+                    }`
+                );
+            }
+            if ($navPrev) {
+                $(oissuDialogue).attr(
+                    "data-oissu-prev",
+                    `${$($navPrev).attr("href")} ${
+                        $($navPrev).attr("data-oissu-prev") || "Prev"
+                    }`
+                );
+            }
+
+            $($nav).remove();
+        }
     }
 
     function updateConfig() {
@@ -749,4 +859,7 @@ $("document").ready(function () {
     oissu.initialize();
 });
 
-export default oissu;
+// export function oissuInitialize() {
+//     oissu.mao();
+//     oissu.initialize();
+// }

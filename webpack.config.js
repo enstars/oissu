@@ -2,7 +2,7 @@ const webpack = require("webpack");
 const path = require("path");
 
 module.exports = {
-    mode: "production",
+    mode: "development",
     devtool: "source-map",
     entry: "./src/js/oissu.js",
     output: {
@@ -30,6 +30,7 @@ module.exports = {
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery",
+            "windows.jQuery": "jquery",
         }),
     ],
 };

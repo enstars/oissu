@@ -31,6 +31,10 @@
         flex-wrap: wrap;
     }
 
+    .os-toolbar .os-t-customization {
+        transform: rotate(90deg);
+    }
+
     .os-toolbar .os-toolbar__section a {
         border-radius: 5px;
         color: currentColor;

@@ -578,6 +578,11 @@ const interact = require("interactjs");
         // code snippet modified from twitter/@gayandasleep <3
         const i = $(oissuEmbed).data("oissu-instance");
         const oissuDialogue = $(oissuEmbed).find("div.oissu");
+
+        const series = $(oissuDialogue).attr("data-oissu-series") || "enstars";
+        const defaultPack =
+            series === "enstars" ? "es-idol-outfit" : "winter-student-outfit";
+        console.log(series);
         let icons = []; // Should always an array of arrays
         const customicons = [];
 
@@ -586,7 +591,7 @@ const interact = require("interactjs");
         });
 
         $.getJSON(
-            "https://uchuu.yuukun.dev/oissu/icons/enstars/es-idol-outfit/_pack.json",
+            `https://uchuu.yuukun.dev/oissu/icons/${series}/${defaultPack}/_pack.json`,
             function (data) {
                 icons.push(data.icons);
             }
@@ -604,7 +609,7 @@ const interact = require("interactjs");
         if (display) {
             $.each(display.split(","), function () {
                 $.getJSON(
-                    `https://uchuu.yuukun.dev/oissu/icons/enstars/${this}/_pack.json`,
+                    `https://uchuu.yuukun.dev/oissu/icons/${series}/${this}/_pack.json`,
                     function (data) {
                         customicons.push(data.icons);
                     }

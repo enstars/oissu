@@ -477,7 +477,7 @@ const interact = require("interactjs");
             $(toolbar).append(tools);
         }
         let credits = $(
-            `<div class="os-credits"><a href="https://github.com/mgn-yuuki/enstars" target="_blank" rel="noopener noreferrer">${oissu.logo}</a></div>`
+            `<div class="os-credits"><a href="https://yuukun.dev/oissu" target="_blank" rel="noopener noreferrer">${oissu.logo}</a></div>`
         );
 
         if (
@@ -580,8 +580,7 @@ const interact = require("interactjs");
         const oissuDialogue = $(oissuEmbed).find("div.oissu");
 
         const series = $(oissuDialogue).attr("data-oissu-series") || "enstars";
-        const defaultPack =
-            series === "enstars" ? "es-idol-outfit" : "winter-student-outfit";
+        const defaultPack = series === "enstars" ? "es-idol-outfit" : "default";
         console.log(series);
         let icons = []; // Should always an array of arrays
         const customicons = [];

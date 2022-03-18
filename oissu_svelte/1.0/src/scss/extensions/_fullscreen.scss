@@ -1,0 +1,41 @@
+.oissu__background.fullscreen {
+    display: none;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 2147483640;
+    overflow: scroll;
+    scrollbar-color: rgba(255, 255, 255, 0.1) #f000;
+}
+
+.oissu__wrapper.fullscreen .oissu__embed {
+    margin: 0px auto;
+}
+
+.oissu__wrapper.fullscreen {
+    margin: auto;
+    max-width: 100vw;
+    box-sizing: border-box;
+}
+
+.oissu__background.fullscreen::-webkit-scrollbar-track {
+    display: none;
+}
+
+.oissu__background.fullscreen::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.1) #f000;
+    border-radius: 50%;
+}
+
+.oissu.fullscreen {
+    margin: 0 auto;
+    min-width: 300px;
+    max-width: calc(100vw - 20px);
+}
+
+body.oissu-expanded {
+    overflow: hidden;
+}

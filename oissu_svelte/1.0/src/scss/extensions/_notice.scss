@@ -1,0 +1,115 @@
+.oissu__embed {
+    .oissu-notice {
+        background: var(--os-background-color);
+        border: var(--os-border);
+        color: var(--os-text-color);
+
+        /* margin: 10px 10px; */
+        padding: 15px 15px;
+        border-radius: 5px;
+        font: var(--os-text-font);
+        letter-spacing: 0px;
+
+        box-sizing: border-box;
+        filter: var(--os-shadow);
+
+        &.os-notice__cw {
+            background: #cb0f0f;
+            border: solid 1px #9f0606;
+            color: white;
+        }
+
+        h2 {
+            font-weight: 700;
+            margin: 0 0 2px;
+            color: inherit;
+            font-size: 1.1em;
+
+            .feather {
+                font-size: 0.9em;
+                vertical-align: -0.1em;
+                stroke: currentColor;
+                margin-left: 0.2em;
+            }
+        }
+
+        p {
+            font-size: 0.9em;
+        }
+
+        .oissu-notice__confirm {
+            text-align: right;
+
+            button {
+                color: white;
+                background: none;
+                border: solid 1px hsla(0, 0%, 100%, 0.3);
+                font: inherit;
+                font-size: 0.8em;
+                font-weight: 700;
+                padding: 5px 10px;
+                border-radius: 5px;
+                filter: var(--os-shadow);
+
+                &:hover {
+                    background: hsla(0, 0%, 100%, 1);
+                    color: #cb0f0f;
+                }
+            }
+        }
+    }
+
+    .oissu-prompt {
+        position: absolute;
+        width: 100%;
+        height: 370px;
+        top: 0;
+        left: 0;
+        z-index: 11;
+
+        /* background: var(--os-background-color); */
+
+        display: grid;
+        grid-template-rows: 1fr auto;
+        justify-items: center;
+        align-items: center;
+
+        padding: 10px;
+        box-sizing: border-box;
+
+        opacity: 0;
+        transform: scale(0.9);
+
+        transition: all 0.2s ease;
+
+        .oissu-notice {
+            max-width: 300px;
+        }
+    }
+
+    .oissu-prompt__greyout {
+        position: absolute;
+        width: 100%;
+        height: 370px;
+        top: 0;
+        left: 0;
+        z-index: 10;
+
+        background: var(--os-background-color);
+
+        opacity: 0;
+
+        transition: all 0.2s ease;
+    }
+
+    &.oissu-notice-prompt-visible {
+        .oissu-prompt {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .oissu-prompt__greyout {
+            opacity: 1;
+        }
+    }
+}

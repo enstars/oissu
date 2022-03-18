@@ -1,0 +1,51 @@
+.os-settings__dialogue {
+    position: fixed !important;
+    padding: 0;
+    margin: 10px;
+    z-index: 2147483645;
+
+    overflow: hidden;
+    cursor: grab;
+    user-select: none;
+
+    letter-spacing: 0px;
+
+    background: var(--os-background-color);
+    border-radius: 6px;
+    border: var(--os-border);
+    color: var(--os-text-color);
+    filter: var(--os-shadow);
+    font: var(--os-text-font);
+    font-size: 0.8em;
+
+    .ui-dialog-titlebar {
+        display: none;
+    }
+
+    .os-settings {
+        padding: 5px;
+    }
+
+    .os-customization {
+        display: flex;
+        gap: 5px;
+        flex-wrap: wrap;
+        justify-content: center;
+        a {
+            border-radius: 5px;
+            color: currentColor;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font: var(--os-text-font);
+            letter-spacing: 0px;
+            padding: 5px;
+            height: 25px;
+            box-sizing: border-box;
+
+            text-decoration: none;
+            border: var(--os-border);
+            background: var(--os-background-secondary-color);
+        }
+    }
+}

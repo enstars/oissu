@@ -1,0 +1,25 @@
+{
+  "dependencies": {
+    "feather-icons": "^4.28.0",
+    "interactjs": "^1.10.11",
+    "jquery": "^3.6.0",
+    "js-yaml": "^4.1.0",
+    "omit-deep-lodash": "^1.1.6",
+    "rehype-dom-stringify": "^3.0.1",
+    "rehype-minify-whitespace": "^5.0.0",
+    "rehype-parse": "^8.0.4",
+    "rehype-stringify": "^9.0.3",
+    "tippy.js": "^6.3.2",
+    "unified": "^10.1.2"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.3.7",
+    "css-loader": "^6.4.0",
+    "postcss-loader": "^6.2.0",
+    "sass": "^1.43.2",
+    "sass-loader": "^12.2.0",
+    "style-loader": "^3.3.0",
+    "webpack": "^5.58.2",
+    "webpack-cli": "^4.9.0"
+  }
+}

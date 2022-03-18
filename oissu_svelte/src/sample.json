@@ -1,0 +1,72 @@
+{
+  "type": "root",
+  "children": [
+    {
+      "type": "element",
+      "tagName": "div",
+      "properties": {
+        "className": ["oissu"]
+      },
+      "children": [
+        {
+          "type": "element",
+          "tagName": "p",
+          "properties": {},
+          "children": [
+            {
+              "type": "element",
+              "tagName": "b",
+              "properties": {},
+              "children": [
+                {
+                  "type": "text",
+                  "value": "Mao:"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "value": " Oissu~"
+            }
+          ]
+        },
+        {
+          "type": "element",
+          "tagName": "p",
+          "properties": {},
+          "children": [
+            {
+              "type": "text",
+              "value": "How are you doing, Sengoku!"
+            }
+          ]
+        },
+        {
+          "type": "element",
+          "tagName": "p",
+          "properties": {},
+          "children": [
+            {
+              "type": "element",
+              "tagName": "b",
+              "properties": {},
+              "children": [
+                {
+                  "type": "text",
+                  "value": "Shinobu:"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "value": " In pain degozaru!"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "data": {
+    "quirksMode": false
+  }
+}

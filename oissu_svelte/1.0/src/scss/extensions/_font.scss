@@ -1,0 +1,39 @@
+@import url("https://fonts.googleapis.com/css2?family=Almendra:ital@0;1&family=Noto+Serif+JP:wght@400;700&display=swap");
+
+.oissu__embed {
+    font {
+        &.spoiler {
+            background: 100% 100%/100% 10000% no-repeat
+                linear-gradient(
+                    to bottom,
+                    var(--os-background-color),
+                    var(--os-text-color)
+                );
+            color: transparent;
+            border-radius: 0.2em;
+
+            &:hover {
+                background-position: 100% 90%;
+            }
+        }
+
+        &.spoiler.spoiler__visible {
+            background-position: 100% 10%;
+            color: var(--os-text-color);
+
+            &:hover {
+                background-position: 100% 20%;
+            }
+        }
+
+        &.natsume {
+            font-family: "Almendra", serif;
+            font-style: italic;
+        }
+
+        &.tsukasa {
+            font-family: "Noto Serif JP", serif;
+            font-size: 0.95em;
+        }
+    }
+}

@@ -1,96 +1,44 @@
 {
-    "dependencies": {
-        "feather-icons": "^4.28.0",
-        "interactjs": "^1.10.11",
-        "jquery": "^3.6.0",
-        "js-yaml": "^4.1.0",
-        "tippy.js": "^6.3.2"
-    },
-    "devDependencies": {
-        "autoprefixer": "^10.3.7",
-        "css-loader": "^6.4.0",
-        "postcss-loader": "^6.2.0",
-        "sass": "^1.43.2",
-        "sass-loader": "^12.2.0",
-        "style-loader": "^3.3.0",
-        "webpack": "^5.58.2",
-        "webpack-cli": "^4.9.0"
-    },
-    "eslintConfig": {
-        "extends": "airbnb",
-        "rules": {
-            "indent": [
-                "error",
-                4
-            ]
-        }
-    },
-    "prettier": {
-        "tabWidth": 4
-    },
-    "stylelint": {
-        "plugins": [
-            "stylelint-scss",
-            "stylelint-order"
-        ],
-        "rules": {
-            "indentation": 4,
-            "number-leading-zero": "always",
-            "max-empty-lines": 1,
-            "string-quotes": "double",
-            "selector-max-id": 0,
-            "selector-list-comma-newline-after": "always",
-            "rule-empty-line-before": [
-                "always",
-                {
-                    "ignore": [
-                        "after-comment",
-                        "first-nested"
-                    ]
-                }
-            ],
-            "comment-empty-line-before": [
-                "always",
-                {
-                    "except": [
-                        "first-nested"
-                    ]
-                }
-            ],
-            "block-opening-brace-space-before": "always",
-            "declaration-colon-space-after": "always",
-            "declaration-colon-space-before": "never",
-            "declaration-block-single-line-max-declarations": 1,
-            "declaration-property-value-blacklist": {
-                "/^border/": [
-                    "none"
-                ]
-            },
-            "at-rule-empty-line-before": [
-                "always",
-                {
-                    "ignore": [
-                        "after-comment"
-                    ],
-                    "except": [
-                        "after-same-name",
-                        "first-nested"
-                    ]
-                }
-            ],
-            "scss/dollar-variable-pattern": "^_?[a-z]+[\\w-]*$",
-            "scss/at-extend-no-missing-placeholder": true,
-            "order/order": [
-                "declarations",
-                {
-                    "type": "at-rule"
-                },
-                {
-                    "type": "at-rule",
-                    "hasBlock": true
-                },
-                "rules"
-            ]
-        }
-    }
+  "name": "oissu",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.16.2",
+    "@testing-library/react": "^12.1.4",
+    "@testing-library/user-event": "^13.5.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-scripts": "5.0.0",
+    "web-vitals": "^2.1.4",
+    "omit-deep-lodash": "^1.1.6",
+    "rehype-dom-stringify": "^3.0.1",
+    "rehype-minify-whitespace": "^5.0.0",
+    "rehype-parse": "^8.0.4",
+    "rehype-stringify": "^9.0.3",
+    "unified": "^10.1.2"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }

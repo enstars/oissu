@@ -1,0 +1,41 @@
+<style global lang="scss">
+  /* @use "../noto"; */
+  @import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap");
+  @import url("https://fonts.googleapis.com/css2?family=Inter:slnt,wght@-10,100..900;0,100..900&display=swap");
+
+  :root {
+    // core
+    --os-text-font: normal normal normal 14px/1.3em "Noto Sans ThaiVariable",
+      "Noto Sans Thai", "Noto Sans DisplayVariable", "Noto Sans Display",
+      "Noto Sans", "Noto Sans JP", "Noto Sans KR", "Noto Sans HK",
+      "Noto Sans SC";
+    --os-text-color: #4b545e;
+    --os-link-color: #294769;
+    --os-link-color__hover: #23558e;
+    --os-background-color: #eef0f3;
+    --os-background-color__hover: #e5e9ee;
+    --os-background-secondary-color: #dbdfe7;
+    --os-background-secondary-color__hover: #ced3dd;
+    --os-animation-duration: 0.2s;
+    --os-border-color: #c5ccd2;
+    --os-border: solid 1px var(--os-border-color);
+    --os-shadow: drop-shadow(0 1px 1.5px rgba(0, 0, 0, 0.05))
+      drop-shadow(0 1px 1px rgba(0, 0, 0, 0.06));
+
+    // toolbar
+    --os-toolbar-color: var(--os-background-secondary-color);
+    --os-toolbar-icon-color: #4b545e;
+
+    // extensions
+    // display
+    --os-bubble-color: #fbfbfe;
+    --os-bubble-background-color: var(--os-background-color);
+    --os-bubble-radius-large: 0.5em;
+    --os-bubble-radius-small: 0.1em;
+    --os-bubble-padding: 0.6em 0.85em;
+    --os-identifier-color: #5e6978;
+    --os-identifier-width: 70px;
+    --os-identifier-width-display: 30px;
+    --os-identifier-radius: 10px;
+  }
+</style>

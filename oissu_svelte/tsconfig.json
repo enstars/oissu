@@ -1,0 +1,6 @@
+{
+  "compilerOptions": {
+    "outDir": "./public/build/",
+    "sourceMap": true
+  }
+}

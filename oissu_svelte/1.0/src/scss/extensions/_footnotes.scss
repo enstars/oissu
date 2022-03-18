@@ -1,0 +1,22 @@
+.os-note li {
+    list-style-type: decimal;
+}
+
+.os-note-inline {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 0.1em;
+    line-height: 0;
+    font: var(--os-text-font);
+    font-weight: 700;
+    font-size: 0.7em;
+    border-radius: 0.25em;
+    border: var(--os-border);
+    padding: 0em 0.3em;
+    color: inherit;
+    vertical-align: 0.2em;
+
+    &:hover {
+        color: inherit;
+    }
+}

@@ -9,8 +9,14 @@ import rehypeStringify from "rehype-stringify";
 import parse from "./lib/parse";
 const omitDeep = require("omit-deep-lodash");
 
+export const syncLocalStates = new Event("syncLocalStates");
+export const updateLocalStates = function () {
+  document.dispatchEvent(syncLocalStates);
+};
+
 async function initialize() {
   const oissuInstances = document.getElementsByClassName("oissu");
+
   for (let i = 0; i < oissuInstances.length; i++) {
     const ast = omitDeep(
       unified()

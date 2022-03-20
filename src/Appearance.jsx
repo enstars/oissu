@@ -5,8 +5,8 @@ import closeOutline from "@iconify/icons-eva/close-outline";
 import { ReactComponent as OissuComfy } from "./assets/oissu_comfy.svg";
 import { ReactComponent as OissuCompact } from "./assets/oissu_compact.svg";
 
-import "@fontsource/inter";
-import "@fontsource/inter/variable.css";
+import "@fontsource/be-vietnam-pro/400.css";
+import "@fontsource/be-vietnam-pro/700.css";
 
 const WindowWrapper = styled.div`
   /* background: #0005; */
@@ -21,9 +21,8 @@ const WindowWrapper = styled.div`
   place-items: end end;
   font-size: 16px;
   color: #555;
-  font-family: "InterVariable", "Inter", -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: "Be Vietnam Pro", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 
   .osx-panel {
     pointer-events: all;

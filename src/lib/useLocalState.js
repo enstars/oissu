@@ -1,3 +1,4 @@
+import { updateLocalStates } from "../index";
 import { useState, useEffect } from "react";
 
 export default function useLocalState(key, defaultValue) {
@@ -7,7 +8,24 @@ export default function useLocalState(key, defaultValue) {
   });
 
   useEffect(() => {
-    window.localStorage.setItem(`oissu-${key}`, JSON.stringify(state));
+    function handleSync() {
+      const localValue = JSON.parse(
+        window.localStorage.getItem(`oissu-${key}`)
+      );
+      if (localValue !== state) setState(localValue);
+    }
+    document.addEventListener("syncLocalStates", handleSync);
+    return () => {
+      document.removeEventListener("syncLocalStates", handleSync);
+    };
+  }, [key, state]);
+
+  useEffect(() => {
+    const localValue = window.localStorage.getItem(`oissu-${key}`);
+    if (localValue !== state) {
+      window.localStorage.setItem(`oissu-${key}`, JSON.stringify(state));
+      updateLocalStates();
+    }
   }, [key, state]);
 
   return [state, setState];

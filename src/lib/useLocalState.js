@@ -21,7 +21,7 @@ export default function useLocalState(key, defaultValue) {
   }, [key, state]);
 
   useEffect(() => {
-    const localValue = window.localStorage.getItem(`oissu-${key}`);
+    const localValue = JSON.parse(window.localStorage.getItem(`oissu-${key}`));
     if (localValue !== state) {
       window.localStorage.setItem(`oissu-${key}`, JSON.stringify(state));
       updateLocalStates();

@@ -7,7 +7,7 @@ import "@fontsource/bodoni-moda/variable-full.css";
 import "@fontsource/bodoni-moda/variable-full-italic.css";
 import "@fontsource/lexend";
 import "@fontsource/lexend/700.css";
-import { useState, useRef } from "react";
+import { useState } from "react";
 import useLocalState from "./lib/useLocalState";
 import styled from "styled-components";
 import Story from "./Story";
@@ -25,20 +25,17 @@ const OissuStyle = styled.div`
 `;
 
 function Oissu({ story }) {
-  const oissuInstance = useRef(null);
   const [density, setDensity] = useLocalState(
     "density",
     "comfy",
-    oissuInstance.current
   );
-  const [font, setFont] = useLocalState("font", "blog", oissuInstance.current);
+  const [font, setFont] = useLocalState("font", "blog");
   const [appearanceOpen, setAppearanceOpen] = useState(false);
   // console.log(themeSCSS);
   return (
     <OissuStyle
       className="oissu-react"
       data-oissu-version="2.0.0"
-      ref={oissuInstance}
     >
       {density}
       {/* {density}

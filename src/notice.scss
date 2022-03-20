@@ -1,0 +1,32 @@
+.oissu-notice {
+  background: var(
+    --os-notice-background-color,
+    var(--os-bubble-background-color)
+  );
+  padding: var(--os-notice-padding);
+  border-radius: var(--os-notice-radius);
+  margin-bottom: var(--os-notice-spacing);
+  box-shadow: var(--os-notice-shadow);
+
+  border-left: solid var(--os-notice-radius) var(--os-notice-accent);
+
+  & > * {
+    margin: 0.4em 0;
+  }
+  & > *:first-child {
+    margin-top: 0;
+  }
+  & > *:last-child {
+    margin-bottom: 0;
+  }
+  h2 {
+    color: inherit;
+  }
+
+  &.oissu-notice__cw {
+    border-left-color: var(--os-notice-accent__cw);
+  }
+  &.oissu-notice__info {
+    border-left-color: var(--os-notice-accent__info);
+  }
+}

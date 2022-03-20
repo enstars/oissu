@@ -1,0 +1,45 @@
+:root {
+  --os-font-family: "KarlaVariable", "Karla";
+  --os-font-size: 16px;
+  --os-font-color: #4b545e;
+  --os-link-color: #294769;
+  --os-link-color__hover: #23558e;
+
+  --os-bubble-background-color: #fbfbfe;
+  --os-name-color: #5e6978;
+  --os-name-width: 5em;
+  --os-icon-size: 2em;
+  --os-background-color: #eef0f3;
+
+  --os-background-color__compact: #fbfbfe;
+  --os-border-color: #c5ccd2;
+
+  --os-toolbar-background-color: #dbdfe7;
+  --os-toolbar-text-color: #4b545e;
+
+  --os-size-multiplier: 1;
+  --os-icon-radius: 0.4em;
+  --os-border-style: solid;
+  --os-animation-duration: 0.2s;
+  --os-name-weight: 700;
+  --os-bubble-radius-large: 0.5em;
+  --os-bubble-radius-small: 0.25em;
+  --os-bubble-padding: 0.5em 0.85em;
+  --os-bubble-shadow: 0 0.05em 0.15em hsla(0, 0%, 0%, 0.05),
+    0 0.1em 0.1em hsla(0, 0%, 0%, 0.06);
+  --os-bubble-spacing: 0.25em;
+  --os-bubble-name-size: 0.8em;
+  --os-bubble-hover-distance: 0.1em;
+  --os-bubble-arrow-size: 0.3em;
+  --os-unit-spacing: 0.5em;
+  --os-column-spacing: 0.5em;
+
+  --os-notice-spacing: 0.5em;
+  --os-notice-padding: 1em 1.1em;
+  --os-notice-background-color: var(--os-bubble-background-color);
+  --os-notice-shadow: var(--os-bubble-shadow);
+  --os-notice-radius: 0.5em;
+  --os-notice-accent: #f8429d;
+  --os-notice-accent__cw: #f1513c;
+  --os-notice-accent__info: #41b1f1;
+}
